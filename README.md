@@ -64,3 +64,43 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Creating an Admin User
+
+To designate a user as an administrator, follow these steps:
+
+1.  **Ensure the user exists:**
+    *   If user registration is enabled on the site, you can create a user through the standard registration form.
+    *   Alternatively, you can create a user using Laravel Tinker:
+        ```bash
+        php artisan tinker
+        ```
+        Then, within Tinker:
+        ```php
+        User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('your_strong_password_here'),
+        ]);
+        ```
+        (Remember to replace with actual details and a strong password).
+
+2.  **Set the `is_admin` flag:**
+    *   You need to update the user's record in the database. The easiest way is again using Laravel Tinker:
+        ```bash
+        php artisan tinker
+        ```
+        Then, within Tinker:
+        ```php
+        $user = User::where('email', 'admin@example.com')->first();
+        if ($user) {
+            $user->is_admin = true;
+            $user->save();
+            echo "User " . $user->email . " is now an admin.\n";
+        } else {
+            echo "User not found.\n";
+        }
+        ```
+    *   Replace `admin@example.com` with the email of the user you want to make an admin.
+
+After these steps, the specified user will have admin privileges and will be able to log in through the `/admin/login` page.

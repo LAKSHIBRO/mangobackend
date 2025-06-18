@@ -28,6 +28,11 @@ class LoginController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
 
+            if (!$user->is_admin) {
+                Auth::logout();
+                return response()->json(['success' => false, 'message' => 'You are not authorized to access the admin panel.'], 403);
+            }
+
             return response()->json([
                 'status' => true,
                 'message' => 'Login Successful',

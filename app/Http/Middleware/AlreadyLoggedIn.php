@@ -16,7 +16,7 @@ class AlreadyLoggedIn
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
+        if (!Auth::check() || !Auth::user()->is_admin) {
             return redirect('/admin/login');
         }
         return $next($request);
