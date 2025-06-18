@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Backend\Auth\LoginController;
+use App\Http\Controllers\Backend\Auth\RegisterController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\GalleryController;
@@ -14,6 +15,8 @@ Route::middleware(['AsAGuest'])->group(function () {
     Route::get('/admin/login', [LoginController::class, 'index'])->name('admin.login');
     Route::post('/admin/login', [LoginController::class, 'login']);
 
+    Route::get('/admin/register', [RegisterController::class, 'showRegistrationForm'])->name('admin.register');
+    Route::post('/admin/register', [RegisterController::class, 'register']);
 });
 
 Route::middleware(['AlreadyLoggedIn'])->group(function () {
