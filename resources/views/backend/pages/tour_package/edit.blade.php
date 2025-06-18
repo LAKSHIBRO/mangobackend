@@ -226,4 +226,5 @@
 @endsection
 
 @push('scripts')
+<script src="{{ asset('js/tour-package-form.js') }}"></script>
 @endpush
