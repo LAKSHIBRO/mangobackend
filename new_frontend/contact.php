@@ -16,14 +16,14 @@
 <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
 </head>
-<body class="bg-white">
+<body class="bg-white" style="overflow-x: hidden;">
 
-    <div class="w-screen min-h-screen flex justify-center items-center flex-col text-white">
+    <div class="w-full min-h-screen flex justify-center items-center flex-col text-white">
         <!-- Header -->
         <?php include 'components/header.php'; ?>
 
         <div class="w-full py-20 flex flex-col justify-center items-center gap-5 bg-[#000000aa]">
-            <div class="text-7xl font-black font-pri">CONTACT</div>
+            <div class="text-5xl sm:text-6xl lg:text-7xl font-black font-pri">CONTACT</div>
             <div class="text-2xl font-black font-pri">HOME - CONTACT</div>
         </div>
         <div class="max-w-[2500px] w-full bg-white grow text-white">
@@ -31,14 +31,14 @@
 
 
             <div class="w-full sm:p-20 bg-white flex justify-center">
-                <div class="bg-[#F9F9F9] w-[1000px] py-15 px-10 flex flex-col sm:flex-row pb-28">
-                    <div class="w-full sm:w-1/2 flex flex-col gap-10">
-                        <input class="bg-[#F3F3F3] p-5 border-0 text-[#535446]" type="text" placeholder="Your Name">
-                        <input class="bg-[#F3F3F3] p-5 border-0 text-[#535446]" type="text" placeholder="Your Phone Number">
-                        <input class="bg-[#F3F3F3] p-5 border-0 text-[#535446]" type="text" placeholder="Your Email">
-                        <textarea name="" class="bg-[#F3F3F3] p-5 border-0 text-[#535446]" placeholder="Message Here" id=""></textarea>
+                <div class="bg-[#F9F9F9] w-full max-w-full lg:w-[1000px] py-8 px-10 flex flex-col sm:flex-row pb-16">
+                    <div class="w-full sm:w-1/2 flex flex-col gap-6">
+                        <input class="bg-[#F3F3F3] p-3 border-0 text-[#535446]" type="text" placeholder="Your Name">
+                        <input class="bg-[#F3F3F3] p-3 border-0 text-[#535446]" type="text" placeholder="Your Phone Number">
+                        <input class="bg-[#F3F3F3] p-3 border-0 text-[#535446]" type="text" placeholder="Your Email">
+                        <textarea name="" class="bg-[#F3F3F3] p-3 border-0 text-[#535446]" placeholder="Message Here" id=""></textarea>
                     </div>
-                    <div class="w-full sm:w-1/2 flex flex-col gap-5 sm:gap-20 p-5 sm:p-10 text-black">
+                    <div class="w-full sm:w-1/2 flex flex-col gap-5 sm:gap-8 p-5 sm:p-10 text-black">
                         <div><div>8500, Negombo Road, Colombo, Sri Lanka</div></div>
                         <div><div>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</div></div>
                         <div><div>0900 am - 07:00pm</div></div>

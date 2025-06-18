@@ -1,7 +1,7 @@
 <footer class="w-full max-w-2000px bg-[#02515A]">
     <div class="sm:py-32  py-10 sm:px-10 flex sm:flex-row flex-col sm:gap-0 gap-10 justify-between">
         <div class="grow sm:px-20 px-5 text-white flex flex-col gap-5 border-white/75 sm:border-r">
-            <img class="w-[200px]" src="Assets/logo.png" alt="">
+            <img class="w-[150px] sm:w-[200px]" src="Assets/logo.png" alt="">
             <div>No 38/4 Moragolla <br> Imbulgasdeniya <br> Kegalle <br> Sri Lanka <br> P.O. Box 71000</div>
             <div>0094777007707</div>
             <div>info@happymangotours.com</div>
@@ -23,7 +23,7 @@
         <div class="grow px-5 sm:px-20 text-white flex flex-col gap-3 border-white/75 ">
             <div>FOLLOW US</div>
             <div class="flex flex-col">
-                <div class="flex w-[150px] h-[75px]">
+                <div class="flex h-[75px]">
                     <div class="w-1/2 flex justify-center items-center bg-[#2F5FA5]">
                         <img src="/Assets/Group 23443.png" alt="">
                     </div>
@@ -31,7 +31,7 @@
                         <img src="/Assets/Group 23445.png" alt="">
                     </div>
                 </div>
-                <div class="flex w-[150px] h-[75px]">
+                <div class="flex h-[75px]">
                     <div class="w-1/2 flex justify-center items-center bg-[#E6615C]">
                         <img src="/Assets/Group 23447.png" alt="">
                     </div>
