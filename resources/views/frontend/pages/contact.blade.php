@@ -44,7 +44,7 @@
                     </div>
                     <div class="col-lg-6 mt-4">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="email" value="{{ old('email') }}"
+                            <input type="email" class="form-control" name="email" value="{{ old('email') }}"
                                 placeholder="Email">
                         </div>
                     </div>

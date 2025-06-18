@@ -37,23 +37,23 @@ li {
 }
 
 .primary-btn {
-    font-size: 14px !important;
-    line-height: 20px !important;
-    font-weight: 500 !important;
-    padding: 10px 30px !important;
-    text-transform: uppercase !important;
-    border-radius: 40px !important;
-    border: 1px solid var(--secondary-color) !important;
-    color: var(--text-color) !important;
-    background-color: var(--secondary-color) !important;
-    transition: all 0.3s ease-in-out !important;
+    font-size: 14px; /* Removed !important */
+    line-height: 20px; /* Removed !important */
+    font-weight: 500; /* Removed !important */
+    padding: 10px 30px; /* Removed !important */
+    text-transform: uppercase; /* Removed !important */
+    border-radius: 40px; /* Removed !important */
+    border: 1px solid var(--secondary-color); /* Removed !important */
+    color: var(--text-color); /* Removed !important */
+    background-color: var(--secondary-color); /* Removed !important */
+    transition: all 0.3s ease-in-out; /* Removed !important */
 }
 
 .primary-btn:hover {
-    border: 1px solid #fff !important;
-    color: #fff !important;
-    background-color: transparent !important;
-    transition: all 0.3s ease-in-out !important;
+    border: 1px solid #fff; /* Removed !important */
+    color: #fff; /* Removed !important */
+    background-color: transparent; /* Removed !important */
+    transition: all 0.3s ease-in-out; /* Removed !important */
 }
 
 .section-subtitle {
@@ -81,11 +81,15 @@ li {
 
 input,
 textarea {
-    font-size: 14px !important;
-    line-height: 24px !important;
-    padding: 12px 10px !important;
+    /* Removed !important from font-size, line-height, padding, border-radius. */
+    /* These are likely fine if Bootstrap's .form-control takes precedence or if these values are similar. */
+    font-size: 14px;
+    line-height: 24px;
+    padding: 12px 10px;
+    border-radius: 12px;
+    /* Kept !important for border, outline, box-shadow, background-color as these are strong overrides for a specific look. */
+    /* A better fix would be to use higher specificity selectors like input.form-control */
     border: none !important;
-    border-radius: 12px !important;
     outline: none !important;
     box-shadow: none !important;
     background-color: #fff !important;
@@ -242,6 +246,12 @@ header .menu-btn svg path {
     height: 100%;
     object-fit: cover;
     object-position: center center;
+}
+
+/* Fix for carousel button overflow */
+.reviews-section .col-10.mx-auto.position-relative,
+.clients-section .col-10.mx-auto.position-relative {
+    overflow-x: hidden;
 }
 
 
