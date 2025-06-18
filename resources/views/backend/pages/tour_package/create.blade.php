@@ -173,12 +173,12 @@
                 <div class="card-body">
                     <div id="itineraryContainer">
                         <div class="itinerary-item card mb-4">
-                            {{-- <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0">Day 1</h5>
                                 <button type="button" class="btn btn-sm btn-danger remove-itinerary" disabled>
                                     <i class="fi fi-rr-trash"></i> Remove
                                 </button>
-                            </div> --}}
+                            </div>
                             <div class="card-body">
                                 <div class="row">
                                     <input type="hidden" name="itinerary[0][day]" value="1" class="day-number">
@@ -207,9 +207,9 @@
                         </div>
                     </div>
 
-                    {{-- <button type="button" class="btn btn-success" id="addItineraryDay">
+                    <button type="button" class="btn btn-success" id="addItineraryDay">
                         <i class="fi fi-rr-add"></i> Add Another Day
-                    </button> --}}
+                    </button>
                 </div>
             </div>
 
@@ -224,66 +224,4 @@
 @endsection
 
 @push('scripts')
-<!-- Include simplified JS for direct button functionality -->
-<script src="{{ asset('js/simple-tour-form.js') }}"></script>
-
-<!-- Fallback inline script if external JS fails -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Wait for all other scripts to finish
-    setTimeout(function() {
-        // Check if buttons have event handlers by adding a backup
-        const addIncludedBtn = document.getElementById('addIncludedItem');
-        if (addIncludedBtn && !addIncludedBtn._hasClickHandler) {
-            console.log('Applying fallback click handler');
-            addIncludedBtn.addEventListener('click', function() {
-                const container = document.getElementById('includedItemsContainer');
-                if (container) {
-                    const newItem = document.createElement('div');
-                    newItem.classList.add('input-group', 'mb-2');
-                    newItem.innerHTML = `
-                        <input type="text" class="form-control" name="included[]" placeholder="E.g. Airport pickup and drop-off" required>
-                        <button type="button" class="btn btn-danger remove-item">
-                            <i class="fi fi-rr-trash"></i>
-                        </button>
-                    `;
-                    container.appendChild(newItem);
-
-                    // Enable remove button functionality
-                    newItem.querySelector('.remove-item').addEventListener('click', function() {
-                        this.closest('.input-group').remove();
-                    });
-                }
-            });
-            addIncludedBtn._hasClickHandler = true;
-        }
-
-        // Check excluded button too
-        const addExcludedBtn = document.getElementById('addExcludedItem');
-        if (addExcludedBtn && !addExcludedBtn._hasClickHandler) {
-            console.log('Applying fallback click handler for excluded');
-            addExcludedBtn.addEventListener('click', function() {
-                const container = document.getElementById('excludedItemsContainer');
-                if (container) {
-                    const newItem = document.createElement('div');
-                    newItem.classList.add('input-group', 'mb-2');
-                    newItem.innerHTML = `
-                        <input type="text" class="form-control" name="excluded[]" placeholder="E.g. Personal expenses" required>
-                        <button type="button" class="btn btn-danger remove-item">
-                            <i class="fi fi-rr-trash"></i>
-                        </button>
-                    `;
-                    container.appendChild(newItem);
-
-                    // Enable remove button functionality
-                    newItem.querySelector('.remove-item').addEventListener('click', function() {
-                        this.closest('.input-group').remove();
-                    });
-                }
-            });
-            addExcludedBtn._hasClickHandler = true;
-        }
-    }, 500);
-});
-</script>
 @endpush

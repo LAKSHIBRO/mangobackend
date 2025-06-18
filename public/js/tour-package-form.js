@@ -25,9 +25,15 @@ document.addEventListener('DOMContentLoaded', function() {
             height: 400
         });
 
-        // Initialize all itinerary description editors
-        document.querySelectorAll('.itinerary-description').forEach(function(textarea) {
-            if (textarea.id) {
+        // Initialize all existing itinerary description editors
+        document.querySelectorAll('.itinerary-description').forEach(function(textarea, index) {
+            // Ensure each textarea has a unique ID if it doesn't already
+            if (!textarea.id) {
+                textarea.id = `itinerary-description-existing-${index}-${Date.now()}`;
+            }
+            // Initialize TinyMCE if it hasn't been initialized on this element yet
+            // Check if tinymce instance exists and if it's not already part of a known set of editors
+            if (typeof tinymce !== 'undefined' && tinymce.get(textarea.id) === null) {
                 tinymce.init({
                     selector: '#' + textarea.id,
                     plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
