@@ -13,7 +13,7 @@
             <div class="font-sec text-xl sm:text-4xl">Enjoy with your love</div>
             <div class="text-4xl sm:text-6xl font-black my-5 sm:my-10">Testimonials</div>
             <div class="text-lg">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
-            <div class="swiper mySwiper mt-12 relative w-full max-w-6xl mx-auto px-4">
+            <div class="swiper mySwiper mt-12 relative w-full px-4">
             <div class="swiper-wrapper">
 
                 <!-- Slide 1 -->
@@ -70,8 +70,12 @@
 
 <!-- Swiper Init -->
 <script>
-    const swiper = new Swiper(".mySwiper", {
+const swiper = new Swiper('.mySwiper', {
     loop: true,
+  autoplay: {
+    delay: 3000, // 3 seconds delay between slides
+    disableOnInteraction: false, // autoplay won't stop after user interaction
+  },
     centeredSlides: true,
     spaceBetween: 30,
     navigation: {
@@ -94,11 +98,5 @@
     }
     });
 </script>
-
-<style>
-    .swiper-slide{
-        display: flex !important;
-    }
-</style>
 
 
