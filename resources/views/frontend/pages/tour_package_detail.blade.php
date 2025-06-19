@@ -6,7 +6,7 @@
 
 @section('content')
     <!-- Hero Section with Package Name -->
-    <div class="w-full py-24 flex flex-col justify-center items-center gap-5 bg-[#000000aa] bg-blend-multiply bg-cover bg-center" style="background-image: url('{{ asset('storage/' . $tourPackage->image) }}')">
+    <div class="w-full py-24 flex flex-col justify-center items-center gap-5 bg-[#000000aa] bg-blend-multiply bg-cover bg-center">
         <div class="text-5xl sm:text-7xl font-black font-pri text-center text-white drop-shadow-lg">{{ $tourPackage->name }}</div>
         <div class="text-xl sm:text-2xl font-bold font-pri text-white flex items-center gap-2">
             <a href="{{ route('home') }}" class="hover:text-[#FF9933] transition">HOME</a>
@@ -17,32 +17,32 @@
 
     <div class="max-w-[2500px] w-full bg-white grow">
         <!-- Tour Navigation and Hero Image Section -->
-        <div class="w-full p-5 sm:p-10 bg-white">
-            <div class="flex flex-col sm:flex-row gap-8 sm:gap-0 max-w-7xl mx-auto">
+        <div class="w-full p-10 bg-white">
+            <div class="flex flex-col sm:flex-row gap-5 sm:gap-0">
                 <!-- Left Navigation Menu -->
-                <div class="w-full sm:w-1/3 sm:pr-8">
-                    <div class="flex flex-col bg-[#FF9933] rounded-lg overflow-hidden shadow-md">
-                        <a href="#about" class="py-7 border-b border-white/20 flex px-8 gap-6 items-center text-xl font-bold hover:bg-[#02515A] duration-300 text-white">
-                            <div class="flex-shrink-0">
-                                <img src="{{ asset('new_frontend/Assets/marker (4).png') }}" alt="About" class="w-6 h-6">
+                <div class="w-full sm:w-1/3 sm:p-20">
+                    <div class="flex flex-col bg-[#FF9933]">
+                        <a href="#about" class="py-10 border-b flex px-15 gap-10 items-center text-xl font-bold hover:bg-[#02515A] duration-300 text-white">
+                            <div>
+                                <img src="{{ asset('new_frontend/Assets/marker (4).png') }}" alt="">
                             </div>
                             <div class="text-lg">ABOUT</div>
                         </a>
-                        <a href="#included-excluded" class="py-7 border-b border-white/20 flex px-8 gap-6 items-center text-xl font-bold hover:bg-[#02515A] duration-300 text-white">
-                            <div class="flex-shrink-0">
-                                <img src="{{ asset('new_frontend/Assets/marker (4).png') }}" alt="Included/Excluded" class="w-6 h-6">
+                        <a href="#included-excluded" class="py-10 border-b flex px-15 gap-10 items-center text-xl font-bold hover:bg-[#02515A] duration-300 text-white">
+                            <div>
+                                <img src="{{ asset('new_frontend/Assets/marker (4).png') }}" alt="">
                             </div>
                             <div class="text-lg">INCLUDE AND EXCLUDE</div>
                         </a>
-                        <a href="#itinerary" class="py-7 border-b border-white/20 flex px-8 gap-6 items-center text-xl font-bold hover:bg-[#02515A] duration-300 text-white">
-                            <div class="flex-shrink-0">
-                                <img src="{{ asset('new_frontend/Assets/marker (4).png') }}" alt="Itinerary" class="w-6 h-6">
+                        <a href="#itinerary" class="py-10 border-b flex px-15 gap-10 items-center text-xl font-bold hover:bg-[#02515A] duration-300 text-white">
+                            <div>
+                                <img src="{{ asset('new_frontend/Assets/marker (4).png') }}" alt="">
                             </div>
                             <div class="text-lg">ITINERARY</div>
                         </a>
-                        <a href="#location" class="py-7 flex px-8 gap-6 items-center text-xl font-bold hover:bg-[#02515A] duration-300 text-white">
-                            <div class="flex-shrink-0">
-                                <img src="{{ asset('new_frontend/Assets/marker (4).png') }}" alt="Location" class="w-6 h-6">
+                        <a href="#location" class="py-10 border-b flex px-15 gap-10 items-center text-xl font-bold hover:bg-[#02515A] duration-300 text-white">
+                            <div>
+                                <img src="{{ asset('new_frontend/Assets/marker (4).png') }}" alt="">
                             </div>
                             <div class="text-lg">LOCATION</div>
                         </a>
@@ -50,8 +50,8 @@
                 </div>
 
                 <!-- Right Main Image -->
-                <div class="sm:w-2/3">
-                    <img class="w-full h-auto object-cover rounded-lg shadow-lg" src="{{ asset('storage/' . $tourPackage->image) }}" alt="{{ $tourPackage->name }}">
+                <div class="sm:w-2/3 sm:p-20">
+                    <img class="w-full h-auto object-cover" src="{{ asset('storage/' . $tourPackage->image) }}" alt="{{ $tourPackage->name }}">
                 </div>
             </div>
         </div>
