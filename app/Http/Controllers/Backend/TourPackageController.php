@@ -25,65 +25,64 @@ class TourPackageController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'type' => 'required|string|in:tailor-made,round-tour',
-            'price' => 'required|numeric',
-            'duration' => 'required|string|max:100',
-            'short_description' => 'required|string',
-            'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'locations' => 'required|string',
-            'included' => 'required|array',
-            'excluded' => 'required|array',
-            'featured' => 'boolean',
-            'active' => 'boolean',
-            'itinerary' => 'required|array',
-            'itinerary.*.day' => 'required|integer',
-            'itinerary.*.title' => 'required|string',
-            'itinerary.*.location' => 'required|string',
-            'itinerary.*.description' => 'required|string',
-            'itinerary.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        try {
+            // First, validate the incoming request data
+            $request->validate($this->getValidationRules());
 
-        // Handle image upload
-        $imagePath = $request->file('image')->store('tour_packages', 'public');
+            // Handle main tour package image upload with proper naming
+            $imageName = time() . '-' . Str::slug($request->name) . '.' . $request->file('image')->extension();
+            $imagePath = $request->file('image')->storeAs('tour_packages', $imageName, 'public');
 
-        // Create tour package
-        $tourPackage = TourPackage::create([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'type' => $request->type,
-            'price' => $request->price,
-            'duration' => $request->duration,
-            'short_description' => $request->short_description,
-            'description' => $request->description,
-            'image' => $imagePath,
-            'locations' => $request->locations,
-            'included' => $request->included,
-            'excluded' => $request->excluded,
-            'featured' => $request->has('featured'),
-            'active' => $request->has('active'),
-        ]);
+            // Create tour package
+            $tourPackage = TourPackage::create([
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+                'type' => $request->type,
+                'price' => $request->price,
+                'duration' => $request->duration,
+                'short_description' => $request->short_description,
+                'description' => $request->description,
+                'image' => $imagePath,
+                'locations' => $request->locations,
+                'included' => $request->included,
+                'excluded' => $request->excluded,
+                'featured' => $request->has('featured'),
+                'active' => $request->has('active'),
+            ]);
 
-        // Create tour itinerary
-        foreach ($request->itinerary as $day) {
-            $itineraryImagePath = null;
-            if (isset($day['image']) && $day['image']) {
-                $itineraryImagePath = $day['image']->store('tour_itineraries', 'public');
+            // Sort the itinerary by day number to ensure correct order
+            $itinerary = collect($request->itinerary)->sortBy('day')->values()->all();
+
+            // Create tour itinerary for each day
+            foreach ($itinerary as $index => $day) {
+                $itineraryImagePath = null;
+
+                // Handle itinerary day image if provided
+                if (isset($day['image']) && $day['image']) {
+                    $itineraryImageName = time() . '-' . Str::slug($request->name) . '-day-' . $day['day'] . '.' . $day['image']->extension();
+                    $itineraryImagePath = $day['image']->storeAs('tour_itineraries', $itineraryImageName, 'public');
+                }
+
+                // Create the itinerary record
+                TourItinerary::create([
+                    'tour_package_id' => $tourPackage->id,
+                    'day' => $day['day'],
+                    'title' => $day['title'],
+                    'location' => $day['location'],
+                    'description' => $day['description'],
+                    'image' => $itineraryImagePath,
+                ]);
             }
 
-            TourItinerary::create([
-                'tour_package_id' => $tourPackage->id,
-                'day' => $day['day'],
-                'title' => $day['title'],
-                'location' => $day['location'],
-                'description' => $day['description'],
-                'image' => $itineraryImagePath,
-            ]);
-        }
+            return redirect()->route('admin.tour_packages')->with('success', 'Tour package created successfully!');
 
-        return redirect()->route('admin.tour_packages')->with('success', 'Tour package created successfully!');
+        } catch (\Exception $e) {
+            // Log the error and return with a user-friendly message
+            \Log::error('Error creating tour package: ' . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'There was a problem creating the tour package: ' . $e->getMessage());
+        }
     }
 
     public function edit($id)
@@ -94,81 +93,88 @@ class TourPackageController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'type' => 'required|string|in:tailor-made,round-tour',
-            'price' => 'required|numeric',
-            'duration' => 'required|string|max:100',
-            'short_description' => 'required|string',
-            'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'locations' => 'required|string',
-            'included' => 'required|array',
-            'excluded' => 'required|array',
-            'featured' => 'boolean',
-            'active' => 'boolean',
-            'itinerary' => 'required|array',
-            'itinerary.*.id' => 'nullable|exists:tour_itineraries,id',
-            'itinerary.*.day' => 'required|integer',
-            'itinerary.*.title' => 'required|string',
-            'itinerary.*.location' => 'required|string',
-            'itinerary.*.description' => 'required|string',
-            'itinerary.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        try {
+            $request->validate($this->getValidationRules(true));
 
-        $tourPackage = TourPackage::findOrFail($id);
+            $tourPackage = TourPackage::findOrFail($id);
 
-        // Handle image upload if a new image is provided
-        if ($request->hasFile('image')) {
-            // Delete the old image if it exists
-            if ($tourPackage->image) {
-                Storage::disk('public')->delete($tourPackage->image);
+            // Handle image upload if a new image is provided
+            if ($request->hasFile('image')) {
+                // Delete the old image if it exists
+                if ($tourPackage->image) {
+                    Storage::disk('public')->delete($tourPackage->image);
+                }
+                // Store with better naming
+                $imageName = time() . '-' . Str::slug($request->name) . '.' . $request->file('image')->extension();
+                $imagePath = $request->file('image')->storeAs('tour_packages', $imageName, 'public');
+            } else {
+                $imagePath = $tourPackage->image;
             }
-            $imagePath = $request->file('image')->store('tour_packages', 'public');
-        } else {
-            $imagePath = $tourPackage->image;
-        }
 
-        // Update tour package
-        $tourPackage->update([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'type' => $request->type,
-            'price' => $request->price,
-            'duration' => $request->duration,
-            'short_description' => $request->short_description,
-            'description' => $request->description,
-            'image' => $imagePath,
-            'locations' => $request->locations,
-            'included' => $request->included,
-            'excluded' => $request->excluded,
-            'featured' => $request->has('featured'),
-            'active' => $request->has('active'),
-        ]);
+            // Update tour package
+            $tourPackage->update([
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+                'type' => $request->type,
+                'price' => $request->price,
+                'duration' => $request->duration,
+                'short_description' => $request->short_description,
+                'description' => $request->description,
+                'image' => $imagePath,
+                'locations' => $request->locations,
+                'included' => $request->included,
+                'excluded' => $request->excluded,
+                'featured' => $request->has('featured'),
+                'active' => $request->has('active'),
+            ]);
 
-        // Get existing itinerary item IDs
-        $existingItineraryIds = $tourPackage->itinerary->pluck('id')->toArray();
-        $updatedItineraryIds = [];
+            // Get existing itinerary item IDs
+            $existingItineraryIds = $tourPackage->itinerary->pluck('id')->toArray();
+            $updatedItineraryIds = [];
 
-        // Update existing itinerary items and create new ones
-        foreach ($request->itinerary as $day) {
-            if (isset($day['id'])) {
-                // Update existing itinerary item
-                $itinerary = TourItinerary::find($day['id']);
+            // Sort the itinerary by day number to ensure correct order
+            $itinerary = collect($request->itinerary)->sortBy('day')->values()->all();
 
-                if ($itinerary) {
-                    $itineraryImagePath = $itinerary->image;
+            // Update existing itinerary items and create new ones
+            foreach ($itinerary as $day) {
+                if (isset($day['id'])) {
+                    // Update existing itinerary item
+                    $itinerary = TourItinerary::find($day['id']);
 
-                    // Handle image upload if a new image is provided
-                    if (isset($day['image']) && $day['image']) {
-                        // Delete the old image if it exists
-                        if ($itinerary->image) {
-                            Storage::disk('public')->delete($itinerary->image);
+                    if ($itinerary) {
+                        $itineraryImagePath = $itinerary->image;
+
+                        // Handle image upload if a new image is provided
+                        if (isset($day['image']) && $day['image']) {
+                            // Delete the old image if it exists
+                            if ($itinerary->image) {
+                                Storage::disk('public')->delete($itinerary->image);
+                            }
+                            // Store with better naming
+                            $itineraryImageName = time() . '-' . Str::slug($request->name) . '-day-' . $day['day'] . '.' . $day['image']->extension();
+                            $itineraryImagePath = $day['image']->storeAs('tour_itineraries', $itineraryImageName, 'public');
                         }
-                        $itineraryImagePath = $day['image']->store('tour_itineraries', 'public');
+
+                        $itinerary->update([
+                            'day' => $day['day'],
+                            'title' => $day['title'],
+                            'location' => $day['location'],
+                            'description' => $day['description'],
+                            'image' => $itineraryImagePath,
+                        ]);
+
+                        $updatedItineraryIds[] = $itinerary->id;
+                    }
+                } else {
+                    // Create new itinerary item
+                    $itineraryImagePath = null;
+                    if (isset($day['image']) && $day['image']) {
+                        $itineraryImageName = time() . '-' . Str::slug($request->name) . '-day-' . $day['day'] . '.' . $day['image']->extension();
+                        $itineraryImagePath = $day['image']->storeAs('tour_itineraries', $itineraryImageName, 'public');
                     }
 
-                    $itinerary->update([
+                    $newItinerary = TourItinerary::create([
+                        'tour_package_id' => $tourPackage->id,
                         'day' => $day['day'],
                         'title' => $day['title'],
                         'location' => $day['location'],
@@ -176,66 +182,108 @@ class TourPackageController extends Controller
                         'image' => $itineraryImagePath,
                     ]);
 
-                    $updatedItineraryIds[] = $itinerary->id;
+                    $updatedItineraryIds[] = $newItinerary->id;
                 }
-            } else {
-                // Create new itinerary item
-                $itineraryImagePath = null;
-                if (isset($day['image']) && $day['image']) {
-                    $itineraryImagePath = $day['image']->store('tour_itineraries', 'public');
-                }
-
-                $newItinerary = TourItinerary::create([
-                    'tour_package_id' => $tourPackage->id,
-                    'day' => $day['day'],
-                    'title' => $day['title'],
-                    'location' => $day['location'],
-                    'description' => $day['description'],
-                    'image' => $itineraryImagePath,
-                ]);
-
-                $updatedItineraryIds[] = $newItinerary->id;
             }
-        }
 
-        // Delete itinerary items that were not updated or created
-        $removedItineraryIds = array_diff($existingItineraryIds, $updatedItineraryIds);
-        foreach ($removedItineraryIds as $itineraryId) {
-            $itinerary = TourItinerary::find($itineraryId);
-            if ($itinerary) {
-                // Delete the image if it exists
-                if ($itinerary->image) {
-                    Storage::disk('public')->delete($itinerary->image);
+            // Delete itinerary items that were not updated or created
+            $removedItineraryIds = array_diff($existingItineraryIds, $updatedItineraryIds);
+            foreach ($removedItineraryIds as $itineraryId) {
+                $itinerary = TourItinerary::find($itineraryId);
+                if ($itinerary) {
+                    // Delete the image if it exists
+                    if ($itinerary->image) {
+                        Storage::disk('public')->delete($itinerary->image);
+                    }
+                    $itinerary->delete();
                 }
-                $itinerary->delete();
             }
-        }
 
-        return redirect()->route('admin.tour_packages')->with('success', 'Tour package updated successfully!');
+            return redirect()->route('admin.tour_packages')->with('success', 'Tour package updated successfully!');
+
+        } catch (\Exception $e) {
+            // Log the error and return with a user-friendly message
+            \Log::error('Error updating tour package: ' . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'There was a problem updating the tour package: ' . $e->getMessage());
+        }
     }
 
     public function delete($id)
     {
-        $tourPackage = TourPackage::findOrFail($id);
+        try {
+            $tourPackage = TourPackage::findOrFail($id);
 
-        // Delete associated itinerary images
-        foreach ($tourPackage->itinerary as $itinerary) {
-            if ($itinerary->image) {
-                Storage::disk('public')->delete($itinerary->image);
+            // Delete associated itinerary images
+            foreach ($tourPackage->itinerary as $itinerary) {
+                if ($itinerary->image) {
+                    Storage::disk('public')->delete($itinerary->image);
+                }
             }
+
+            // Delete tour package image
+            if ($tourPackage->image) {
+                Storage::disk('public')->delete($tourPackage->image);
+            }
+
+            // Delete associated itinerary items
+            $tourPackage->itinerary()->delete();
+
+            // Delete the tour package
+            $tourPackage->delete();
+
+            return redirect()->route('admin.tour_packages')->with('success', 'Tour package deleted successfully!');
+
+        } catch (\Exception $e) {
+            \Log::error('Error deleting tour package: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to delete tour package: ' . $e->getMessage());
         }
+    }
 
-        // Delete tour package image
-        if ($tourPackage->image) {
-            Storage::disk('public')->delete($tourPackage->image);
+    public function show($id)
+    {
+        try {
+            $tourPackage = TourPackage::with(['itinerary' => function($query) {
+                $query->orderBy('day', 'asc');
+            }])->findOrFail($id);
+
+            return view('backend.pages.tour_package.show', compact('tourPackage'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.tour_packages')
+                ->with('error', 'Tour package not found or cannot be displayed.');
         }
+    }
 
-        // Delete associated itinerary items
-        $tourPackage->itinerary()->delete();
+    /**
+     * Get the validation rules for tour package data
+     *
+     * @param bool $isUpdate Whether this is an update (image not required)
+     * @return array
+     */
+    private function getValidationRules($isUpdate = false)
+    {
+        $imageRule = $isUpdate ? 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048' : 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048';
 
-        // Delete the tour package
-        $tourPackage->delete();
-
-        return redirect()->route('admin.tour_packages')->with('success', 'Tour package deleted successfully!');
+        return [
+            'name' => 'required|string|max:255',
+            'type' => 'required|string|in:tailor-made,round-tour',
+            'price' => 'required|numeric',
+            'duration' => 'required|string|max:100',
+            'short_description' => 'required|string',
+            'description' => 'required|string',
+            'image' => $imageRule,
+            'locations' => 'required|string',
+            'included' => 'required|array',
+            'excluded' => 'required|array',
+            'featured' => 'boolean',
+            'active' => 'boolean',
+            'itinerary' => 'required|array',
+'itinerary.*.day' => 'required|integer',
+'itinerary.*.title' => 'required|string|max:255',
+            'itinerary.*.location' => 'required|string|max:255',
+            'itinerary.*.description' => 'required|string',
+            'itinerary.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ];
     }
 }

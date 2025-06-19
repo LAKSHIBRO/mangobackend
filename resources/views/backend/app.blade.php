@@ -69,6 +69,7 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script> -->
     <script src="{{ asset('js/backend/app.js') }}"></script>
     <script src="https://www.ayurex.lk/js/fileChooser.min.js"></script>
+    @yield('scripts')
 </body>
 
 </html>
