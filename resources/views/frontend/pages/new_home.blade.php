@@ -146,6 +146,35 @@
 
             <div class="swiper-container tailor-made-tours-swiper">
                 <div class="swiper-wrapper">
+                    @forelse($tailorMadeTours as $tour)
+                    <div class="swiper-slide">
+                        <div class="w-full h-[500px] sm:h-[650px] bg-slate-300 flex flex-col justify-end relative group bg-cover bg-center" style="background-image: url('{{ asset('storage/'.$tour->image) }}');">
+                            <div class="absolute bg-[#ff9933] top-0 right-4 sm:right-7 rounded-b-xl text-white text-xs font-bold px-3 py-2 z-10">TAILOR MADE TOURS</div>
+                            @if($tour->featured)
+                            <div class="absolute bg-[#02515A] top-0 left-4 rounded-b-xl text-white text-xs font-bold px-3 py-2 z-10">FEATURED</div>
+                            @endif
+                            <div class="bg-black/50 z-[9] opacity-0 group-hover:opacity-100 duration-300 w-full grow flex justify-center items-center text-white">
+                                <a href="{{ url('/tour-package/' . $tour->slug) }}" class="border-2 rounded-full p-4 sm:p-5 duration-300 group-hover:rotate-[-30deg]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-white" fill="white" width="24" height="24" viewBox="0 0 12.86 8.045">
+                                        <g transform="translate(-3 14.045) rotate(-90)">
+                                            <g transform="translate(6 3)">
+                                                <path d="M4.022,0a.525.525,0,0,1,.525.525V6.26H7.52a.524.524,0,0,1,.443.8l-3.5,5.551a.524.524,0,0,1-.888,0L.081,7.063a.524.524,0,0,1,.444-.8H3.5V.525A.525.525,0,0,1,4.022,0ZM6.569,7.309H1.475l2.547,4.042Z" fill-rule="evenodd"/>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="p-5 sm:p-10 font-semibold w-full text-white z-10 group-hover:bg-[#ff9933] duration-300 text-sm sm:text-base">
+                                <div class="uppercase">{{ $tour->name }}</div>
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                                    <span class="text-xl sm:text-3xl">PRICE ${{ number_format($tour->price) }}/ </span>
+                                    <span class="mt-1 sm:mt-0">{{ $tour->duration }}</span>
+                                </div>
+                                <div class="text-sm mt-2 line-clamp-2 font-normal opacity-90">{{ $tour->locations }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    @empty
                     <div class="swiper-slide">
                         <div class="w-full h-[500px] sm:h-[650px] bg-slate-300 flex flex-col justify-end relative group bg-cover bg-center" style="background-image: url('{{ asset('new_frontend/Assets/img(7).png') }}');">
                             <div class="absolute bg-[#ff9933] top-0 right-4 sm:right-7 rounded-b-xl text-white text-xs font-bold px-3 py-2 z-10">TAILOR MADE TOURS</div>
@@ -161,67 +190,19 @@
                                 </div>
                             </div>
                             <div class="p-5 sm:p-10 font-semibold w-full text-white z-10 group-hover:bg-[#ff9933] duration-300 text-sm sm:text-base">
-                                <div>FAMILY TRIPS ON MOUNTAIN</div>
-                                <div><span class="text-xl sm:text-3xl">PRICE $100/ </span> <span>5DAYS TRIPS</span></div>
+                                <div>No tours available at the moment</div>
+                                <div><span class="text-xl sm:text-3xl">Coming Soon</span></div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="swiper-slide">
-                        <div class="w-full h-[500px] sm:h-[650px] bg-slate-300 flex flex-col justify-end relative group bg-cover bg-center" style="background-image: url('{{ asset('new_frontend/Assets/img(7).png') }}');">
-                            <div class="absolute bg-[#ff9933] top-0 right-4 sm:right-7 rounded-b-xl text-white text-xs font-bold px-3 py-2 z-10">TAILOR MADE TOURS</div>
-                            <div class="bg-black/50 z-[9] opacity-0 group-hover:opacity-100 duration-300 w-full grow flex justify-center items-center text-white">
-                                <div class="border-2 rounded-full p-4 sm:p-5 duration-300 group-hover:rotate-[-30deg]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-white" fill="white" width="24" height="24" viewBox="0 0 12.86 8.045">
-                                        <g transform="translate(-3 14.045) rotate(-90)">
-                                            <g transform="translate(6 3)">
-                                                <path d="M4.022,0a.525.525,0,0,1,.525.525V6.26H7.52a.524.524,0,0,1,.443.8l-3.5,5.551a.524.524,0,0,1-.888,0L.081,7.063a.524.524,0,0,1,.444-.8H3.5V.525A.525.525,0,0,1,4.022,0ZM6.569,7.309H1.475l2.547,4.042Z" fill-rule="evenodd"/>
-                                            </g>
-                                        </g>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="p-5 sm:p-10 font-semibold w-full text-white z-10 group-hover:bg-[#ff9933] duration-300 text-sm sm:text-base">
-                                <div>BEACH HOLIDAY PACKAGE</div>
-                                <div><span class="text-xl sm:text-3xl">PRICE $150/ </span> <span>7DAYS TRIPS</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <div class="w-full h-[500px] sm:h-[650px] bg-slate-300 flex flex-col justify-end relative group bg-cover bg-center" style="background-image: url('{{ asset('new_frontend/Assets/img(7).png') }}');">
-                            <div class="absolute bg-[#ff9933] top-0 right-4 sm:right-7 rounded-b-xl text-white text-xs font-bold px-3 py-2 z-10">TAILOR MADE TOURS</div>
-                            <div class="bg-black/50 z-[9] opacity-0 group-hover:opacity-100 duration-300 w-full grow flex justify-center items-center text-white">
-                                <div class="border-2 rounded-full p-4 sm:p-5 duration-300 group-hover:rotate-[-30deg]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-white" fill="white" width="24" height="24" viewBox="0 0 12.86 8.045">
-                                        <g transform="translate(-3 14.045) rotate(-90)">
-                                            <g transform="translate(6 3)">
-                                                <path d="M4.022,0a.525.525,0,0,1,.525.525V6.26H7.52a.524.524,0,0,1,.443.8l-3.5,5.551a.524.524,0,0,1-.888,0L.081,7.063a.524.524,0,0,1,.444-.8H3.5V.525A.525.525,0,0,1,4.022,0ZM6.569,7.309H1.475l2.547,4.042Z" fill-rule="evenodd"/>
-                                            </g>
-                                        </g>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="p-5 sm:p-10 font-semibold w-full text-white z-10 group-hover:bg-[#ff9933] duration-300 text-sm sm:text-base">
-                                <div>CULTURAL HERITAGE TOUR</div>
-                                <div><span class="text-xl sm:text-3xl">PRICE $120/ </span> <span>6DAYS TRIPS</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Add more tour slides as needed -->
+                    @endforelse
                 </div>
-                <!-- Add pagination and navigation controls -->
+                <!-- Add Pagination -->
                 <div class="swiper-pagination"></div>
-                <div class="swiper-button-prev"></div>
+                <!-- Add Navigation -->
                 <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
             </div>
-
-            {{-- <div class="justify-center flex py-15 mt-10">
-                <a href="{{ url('/service') }}">
-                    <button class="py-3 px-6 rounded-full text-white font-[600] bg-[#02515A]">EXPLORE MORE TOURS</button>
-                </a>
-            </div> --}}
         </section>
 
         <!-- Round Tours Section -->
@@ -234,6 +215,35 @@
 
             <div class="swiper-container round-tours-swiper">
                 <div class="swiper-wrapper">
+                    @forelse($roundTours as $tour)
+                    <div class="swiper-slide">
+                        <div class="w-full h-[500px] sm:h-[650px] bg-slate-300 flex flex-col justify-end relative group bg-cover bg-center" style="background-image: url('{{ asset('storage/'.$tour->image) }}');">
+                            <div class="absolute bg-[#ff9933] top-0 right-4 sm:right-7 rounded-b-xl text-white text-xs font-bold px-3 py-2 z-10">ROUND TOURS</div>
+                            @if($tour->featured)
+                            <div class="absolute bg-[#02515A] top-0 left-4 rounded-b-xl text-white text-xs font-bold px-3 py-2 z-10">FEATURED</div>
+                            @endif
+                            <div class="bg-black/50 z-[9] opacity-0 group-hover:opacity-100 duration-300 w-full grow flex justify-center items-center text-white">
+                                <a href="{{ url('/tour-package/' . $tour->slug) }}" class="border-2 rounded-full p-4 sm:p-5 duration-300 group-hover:rotate-[-30deg]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-white" fill="white" width="24" height="24" viewBox="0 0 12.86 8.045">
+                                        <g transform="translate(-3 14.045) rotate(-90)">
+                                            <g transform="translate(6 3)">
+                                                <path d="M4.022,0a.525.525,0,0,1,.525.525V6.26H7.52a.524.524,0,0,1,.443.8l-3.5,5.551a.524.524,0,0,1-.888,0L.081,7.063a.524.524,0,0,1,.444-.8H3.5V.525A.525.525,0,0,1,4.022,0ZM6.569,7.309H1.475l2.547,4.042Z" fill-rule="evenodd"/>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="p-5 sm:p-10 font-semibold w-full text-white z-10 group-hover:bg-[#ff9933] duration-300 text-sm sm:text-base">
+                                <div class="uppercase">{{ $tour->name }}</div>
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                                    <span class="text-xl sm:text-3xl">PRICE ${{ number_format($tour->price) }}/ </span>
+                                    <span class="mt-1 sm:mt-0">{{ $tour->duration }}</span>
+                                </div>
+                                <div class="text-sm mt-2 line-clamp-2 font-normal opacity-90">{{ $tour->locations }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    @empty
                     <div class="swiper-slide">
                         <div class="w-full h-[500px] sm:h-[650px] bg-slate-300 flex flex-col justify-end relative group bg-cover bg-center" style="background-image: url('{{ asset('new_frontend/Assets/img(7).png') }}');">
                             <div class="absolute bg-[#ff9933] top-0 right-4 sm:right-7 rounded-b-xl text-white text-xs font-bold px-3 py-2 z-10">ROUND TOURS</div>
@@ -249,66 +259,18 @@
                                 </div>
                             </div>
                             <div class="p-5 sm:p-10 font-semibold w-full text-white z-10 group-hover:bg-[#ff9933] duration-300 text-sm sm:text-base">
-                                <div>ESSENTIAL SRI LANKA</div>
-                                <div><span class="text-xl sm:text-3xl">PRICE $899/ </span> <span>7DAYS TRIPS</span></div>
+                                <div>No tours available at the moment</div>
+                                <div><span class="text-xl sm:text-3xl">Coming Soon</span></div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="swiper-slide">
-                        <div class="w-full h-[500px] sm:h-[650px] bg-slate-300 flex flex-col justify-end relative group bg-cover bg-center" style="background-image: url('{{ asset('new_frontend/Assets/img(7).png') }}');">
-                            <div class="absolute bg-[#ff9933] top-0 right-4 sm:right-7 rounded-b-xl text-white text-xs font-bold px-3 py-2 z-10">ROUND TOURS</div>
-                            <div class="bg-black/50 z-[9] opacity-0 group-hover:opacity-100 duration-300 w-full grow flex justify-center items-center text-white">
-                                <div class="border-2 rounded-full p-4 sm:p-5 duration-300 group-hover:rotate-[-30deg]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-white" fill="white" width="24" height="24" viewBox="0 0 12.86 8.045">
-                                        <g transform="translate(-3 14.045) rotate(-90)">
-                                            <g transform="translate(6 3)">
-                                                <path d="M4.022,0a.525.525,0,0,1,.525.525V6.26H7.52a.524.524,0,0,1,.443.8l-3.5,5.551a.524.524,0,0,1-.888,0L.081,7.063a.524.524,0,0,1,.444-.8H3.5V.525A.525.525,0,0,1,4.022,0ZM6.569,7.309H1.475l2.547,4.042Z" fill-rule="evenodd"/>
-                                            </g>
-                                        </g>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="p-5 sm:p-10 font-semibold w-full text-white z-10 group-hover:bg-[#ff9933] duration-300 text-sm sm:text-base">
-                                <div>COMPLETE ISLAND EXPLORER</div>
-                                <div><span class="text-xl sm:text-3xl">PRICE $1,499/ </span> <span>10DAYS TRIPS</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <div class="w-full h-[500px] sm:h-[650px] bg-slate-300 flex flex-col justify-end relative group bg-cover bg-center" style="background-image: url('{{ asset('new_frontend/Assets/img(7).png') }}');">
-                            <div class="absolute bg-[#ff9933] top-0 right-4 sm:right-7 rounded-b-xl text-white text-xs font-bold px-3 py-2 z-10">ROUND TOURS</div>
-                            <div class="bg-black/50 z-[9] opacity-0 group-hover:opacity-100 duration-300 w-full grow flex justify-center items-center text-white">
-                                <div class="border-2 rounded-full p-4 sm:p-5 duration-300 group-hover:rotate-[-30deg]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-white" fill="white" width="24" height="24" viewBox="0 0 12.86 8.045">
-                                        <g transform="translate(-3 14.045) rotate(-90)">
-                                            <g transform="translate(6 3)">
-                                                <path d="M4.022,0a.525.525,0,0,1,.525.525V6.26H7.52a.524.524,0,0,1,.443.8l-3.5,5.551a.524.524,0,0,1-.888,0L.081,7.063a.524.524,0,0,1,.444-.8H3.5V.525A.525.525,0,0,1,4.022,0ZM6.569,7.309H1.475l2.547,4.042Z" fill-rule="evenodd"/>
-                                            </g>
-                                        </g>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="p-5 sm:p-10 font-semibold w-full text-white z-10 group-hover:bg-[#ff9933] duration-300 text-sm sm:text-base">
-                                <div>LUXURY SRI LANKA</div>
-                                <div><span class="text-xl sm:text-3xl">PRICE $1,899/ </span> <span>12DAYS TRIPS</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Add more tour slides as needed -->
+                    @endforelse
                 </div>
-                <!-- Add pagination and navigation controls -->
+                <!-- Add Pagination -->
                 <div class="swiper-pagination"></div>
-                <div class="swiper-button-prev"></div>
+                <!-- Add Navigation -->
                 <div class="swiper-button-next"></div>
-            </div>
-
-            <div class="justify-center flex py-15 mt-10">
-                <a href="{{ url('/service') }}">
-                    <button class="py-3 px-6 rounded-full text-white font-[600] bg-[#ff9933]">EXPLORE MORE TOURS</button>
-                </a>
+                <div class="swiper-button-prev"></div>
             </div>
         </section>
 
@@ -401,19 +363,19 @@
                 <div class="text-xl sm:text-3xl font-sec">Submit Enquiry</div>
                 <div class="text-3xl sm:text-5xl font-black font-pri">How did you hear about us?</div>
                 <form action="#" method="POST" class="flex flex-wrap">
-                    <div class="relative z-0 w-full md: w-1/2 sm:w-1/2 p-5">
+                    <div class="relative z-0 w-full md:w-1/2 sm:w-1/2 p-5">
                         <input type="text" id="inquiry_type" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                         <label for="inquiry_type" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Inquiry types*</label>
                     </div>
-                    <div class="relative z-0 w-full md: w-1/2 sm:w-1/2 p-5">
+                    <div class="relative z-0 w-full md:w-1/2 sm:w-1/2 p-5">
                         <input type="email" id="email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                         <label for="email" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Your Email*</label>
                     </div>
-                    <div class="relative z-0 w-full md: w-1/2 sm:w-1/2 p-5">
+                    <div class="relative z-0 w-full md:w-1/2 sm:w-1/2 p-5">
                         <input type="text" id="name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                         <label for="name" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Your Name*</label>
                     </div>
-                    <div class="relative z-0 w-full md: w-1/2 sm:w-1/2 p-5">
+                    <div class="relative z-0 w-full md:w-1/2 sm:w-1/2 p-5">
                         <input type="text" id="country" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                         <label for="country" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Country*</label>
                     </div>
