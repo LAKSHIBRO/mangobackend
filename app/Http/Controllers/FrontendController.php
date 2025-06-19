@@ -14,7 +14,17 @@ class FrontendController extends Controller
 {
     public function home()
     {
-        return view('frontend.pages.new_home');
+        $tailorMadeTours = TourPackage::where('type', 'tailor-made')
+            ->where('active', true)
+            ->orderBy('created_at', 'desc')
+            ->limit(6)
+            ->get();
+        $roundTours = TourPackage::where('type', 'round-tour')
+            ->where('active', true)
+            ->orderBy('created_at', 'desc')
+            ->limit(6)
+            ->get();
+        return view('frontend.pages.new_home', compact('tailorMadeTours', 'roundTours'));
     }
 
     public function about()
