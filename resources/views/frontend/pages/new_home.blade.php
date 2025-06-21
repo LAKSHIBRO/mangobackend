@@ -108,7 +108,7 @@
             </div>
             <div class="w-full sm:w-1/2">
                 <div class="w-full flex items-end h-[871px]" style="background-image: url('{{ asset('new_frontend/Assets/img(6).png') }}'); background-size: cover; background-position: center;">
-                    <div class="bg-[#FF9933] py-9 px-12 text-xl sm:text-2xl tracking-wider">MORE DETAILS</div>
+                    <div class="bg-[#FF9933] hover:bg-[#FFBB55] cursor-pointer duration-300 py-9 px-12 text-xl sm:text-2xl tracking-wider">MORE DETAILS</div>
                 </div>
             </div>
         </section>
@@ -130,14 +130,14 @@
                         Happy Mango Tours, we specialize in crafting unforgettable travel experiences tailored just for you. Whether you're looking for a relaxing beach escape, an action-packed adventure, or a deep dive into rich cultural heritage, we have the perfect tour to match your desires. <br><br> With expertly curated packages, experienced local guides, and personalized services, we ensure every journey is seamless, exciting, and filled with incredible memories. Let us take you on an extraordinary adventure—wherever your heart desires!
                     </div>
                     <div class="">
-                        <button class="border py-2 px-5 cursor-pointer font-pri text-white">LEARN MORE ABOUT</button>
+                        <button class="border hover:scale-105 duration-300 py-2 px-5 cursor-pointer font-pri text-white">LEARN MORE ABOUT</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Tailor-Made Tours Section -->
-        <section class="sm:block w-full bg-white text-black px-5 sm:px-20 pb-10 sm:pb-40" id="tailor-made-tours">
+    <!-- Tailor-Made Tours Section -->
+       <section class="sm:block w-full bg-white text-black px-5 sm:px-20 pb-10 sm:pb-40" id="tailor-made-tours">
             <div class="w-full flex pt-28 pb-10 flex-col justify-center items-center gap-5">
                 <div class="text-xl sm:text-3xl flex justify-center font-sec">Enjoy with your love</div>
                 <div class="text-3xl sm:text-5xl font-black flex justify-center font-pri ">Tailor-Made Tours</div>
@@ -197,11 +197,16 @@
                     </div>
                     @endforelse
                 </div>
-                <!-- Add Pagination -->
-                <div class="swiper-pagination"></div>
+              
+                
                 <!-- Add Navigation -->
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
+            </div>
+            
+            <!-- Explore More Tours Button -->
+            <div class="w-full flex justify-center mt-10">
+                <button class="py-3 px-6 rounded-full text-white font-[600] bg-[#02515A] hover:bg-[#03616B] duration-300 cursor-pointer">EXPLORE MORE TOURS</button>
             </div>
         </section>
 
@@ -266,11 +271,16 @@
                     </div>
                     @endforelse
                 </div>
-                <!-- Add Pagination -->
-                <div class="swiper-pagination"></div>
+              
+                
                 <!-- Add Navigation -->
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
+            </div>
+            
+            <!-- Explore More Tours Button -->
+            <div class="w-full flex justify-center mt-10">
+                <button class="py-3 px-6 rounded-full text-white font-[600] bg-[#FF9933] hover:bg-[#FFAB57] duration-300 cursor-pointer">EXPLORE MORE TOURS</button>
             </div>
         </section>
 
@@ -352,10 +362,10 @@
                         <div>info@happymangotours.com</div>
                     </div>
                     <div class="flex gap-10 items-center">
-                        <img src="{{ asset('new_frontend/Assets/Icon Container(1).png') }}" class="w-[50px] h-[50px]" alt="">
-                        <img src="{{ asset('new_frontend/Assets/Icon Container(2).png') }}" class="w-[50px] h-[50px]" alt="">
-                        <img src="{{ asset('new_frontend/Assets/Icon Container(3).png') }}" class="w-[50px] h-[50px]" alt="">
-                        <img src="{{ asset('new_frontend/Assets/Icon Container(4).png') }}" class="w-[50px] h-[50px]" alt="">
+                        <img class="hover:scale-105 duration-300" src="{{ asset('new_frontend/Assets/Icon Container(1).png') }}" class="w-[50px] h-[50px]" alt="">
+                        <img class="hover:scale-105 duration-300" src="{{ asset('new_frontend/Assets/Icon Container(2).png') }}" class="w-[50px] h-[50px]" alt="">
+                        <img class="hover:scale-105 duration-300" src="{{ asset('new_frontend/Assets/Icon Container(3).png') }}" class="w-[50px] h-[50px]" alt="">
+                        <img class="hover:scale-105 duration-300" src="{{ asset('new_frontend/Assets/Icon Container(4).png') }}" class="w-[50px] h-[50px]" alt="">
                     </div>
                 </div>
             </div>
@@ -363,19 +373,19 @@
                 <div class="text-xl sm:text-3xl font-sec">Submit Enquiry</div>
                 <div class="text-3xl sm:text-5xl font-black font-pri">How did you hear about us?</div>
                 <form action="#" method="POST" class="flex flex-wrap">
-                    <div class="relative z-0 w-full md:w-1/2 sm:w-1/2 p-5">
+                    <div class="relative z-0 w-full md: w-1/2 sm:w-1/2 p-5">
                         <input type="text" id="inquiry_type" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                         <label for="inquiry_type" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Inquiry types*</label>
                     </div>
-                    <div class="relative z-0 w-full md:w-1/2 sm:w-1/2 p-5">
+                    <div class="relative z-0 w-full md: w-1/2 sm:w-1/2 p-5">
                         <input type="email" id="email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                         <label for="email" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Your Email*</label>
                     </div>
-                    <div class="relative z-0 w-full md:w-1/2 sm:w-1/2 p-5">
+                    <div class="relative z-0 w-full md: w-1/2 sm:w-1/2 p-5">
                         <input type="text" id="name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                         <label for="name" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Your Name*</label>
                     </div>
-                    <div class="relative z-0 w-full md:w-1/2 sm:w-1/2 p-5">
+                    <div class="relative z-0 w-full md: w-1/2 sm:w-1/2 p-5">
                         <input type="text" id="country" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                         <label for="country" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Country*</label>
                     </div>
@@ -392,11 +402,7 @@
 
         <!-- Gallery Section -->
         <section class="pb-4 bg-white" id="gallery">
-            <div class="w-full flex pt-10 pb-5 flex-col justify-center items-center gap-5">
-                <div class="text-xl sm:text-3xl flex justify-center font-sec">Capture the Memories</div>
-                <div class="text-3xl sm:text-5xl font-black flex justify-center font-pri">Gallery</div>
-                <div class="sm:w-3/7 flex justify-center text-center font-pri text-sm sm:text-md">Explore the beauty of Sri Lanka through our travelers' experiences</div>
-            </div>
+           
 
             <div class="w-full flex-wrap sm:flex-nowrap flex">
                 <div class="h-auto max-w-1/2 sm:max-w-1/7 sm:w-1/7 grow p-[1px] sm:p-1 group cursor-pointer">
@@ -471,11 +477,6 @@
                 </div>
             </div>
 
-            <div class="justify-center flex py-6">
-                <a href="{{ url('/gallery') }}">
-                    <button class="py-3 px-6 rounded-full text-white font-[600] bg-[#02515A]">EXPLORE FULL GALLERY</button>
-                </a>
-            </div>
         </section>
     </div>
 
@@ -492,6 +493,10 @@
         height: 40px;
         border-radius: 50%;
         --swiper-navigation-size: 20px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
     }
 
     .swiper-button-next:hover,
@@ -505,17 +510,25 @@
 
     /* Fixes for swiper container */
     .swiper-container {
-        padding-bottom: 50px;  /* Space for pagination bullets */
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-bottom: 50px;
+        position: relative;
+        overflow: hidden;
     }
 
-    .swiper-button-next {
-        right: 10px;
+    .tailor-made-tours-swiper .swiper-button-next,
+    .round-tours-swiper .swiper-button-next {
+        right: 20px;
     }
 
-    .swiper-button-prev {
-        left: 10px;
+    .tailor-made-tours-swiper .swiper-button-prev,
+    .round-tours-swiper .swiper-button-prev {
+        left: 20px;
+    }
+
+    /* Ensure navigation stays within sections */
+    #tailor-made-tours .swiper-container,
+    #round-tours .swiper-container {
+        position: relative;
     }
 </style>
 @endsection
