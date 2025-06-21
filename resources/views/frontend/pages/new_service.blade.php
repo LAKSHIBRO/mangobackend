@@ -63,56 +63,56 @@
 
         <div class="w-full bg-white text-black">
             <div class="w-full flex pt-10 px-5 sm:px-0 sm:pt-28 pb-10 flex-col justify-center items-center gap-5">
-                <div class="text-xl sm:text-3xl flex justify-center font-sec">Enjoy with your love</div>
-                <div class="text-3xl sm:text-5xl font-black flex justify-center font-pri ">Why Choose a Tailor-Made Tour?</div>
-                <div class="sm:w-3/4 mx-auto flex justify-center sm:text-center font-pri">
-                    A tailor-made tour gives you the freedom to travel on your terms. Whether you prefer a relaxed itinerary or an action-packed adventure, we design a journey that suits your interests, pace, and budget. With handpicked accommodations, personalized experiences, and expert local guides, you get a seamless and hassle-free travel experience. From hidden gems to iconic landmarks, explore Sri Lanka exactly the way you want, with the flexibility to adjust your plans along the way.
-                </div>
+            <div class="text-xl sm:text-3xl flex justify-center font-sec">Enjoy with your love</div>
+            <div class="text-3xl sm:text-5xl font-black flex justify-center font-pri ">Why Choose a Tailor-Made Tour?</div>
+            <div class="sm:w-3/4 mx-auto flex justify-center sm:text-center font-pri">
+                A tailor-made tour gives you the freedom to travel on your terms. Whether you prefer a relaxed itinerary or an action-packed adventure, we design a journey that suits your interests, pace, and budget. With handpicked accommodations, personalized experiences, and expert local guides, you get a seamless and hassle-free travel experience. From hidden gems to iconic landmarks, explore Sri Lanka exactly the way you want, with the flexibility to adjust your plans along the way.
+            </div>
             </div>
 
             <div class="w-full flex flex-wrap px-5 sm:px-20 pb-20">
-                <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
-                    <img class="sm:w-auto" src="{{ asset('new_frontend/Assets/Group 23364.png') }}" alt="Personalized Itineraries">
-                    <div class="flex flex-col grow gap-5">
-                        <div class="text-xl font-bold">Personalized Itineraries</div>
-                        <div>Travel at your own pace with destinations you love.</div>
-                    </div>
+            <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
+                <img class="w-12 h-12 sm:w-16 sm:h-16 object-contain flex-shrink-0" src="{{ asset('new_frontend/Assets/Group 23364.png') }}" alt="">
+                <div class="flex flex-col grow gap-5">
+                <div class="text-xl font-bold">Personalized Itineraries</div>
+                <div>Travel at your own pace with destinations you love.</div>
                 </div>
-                <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
-                    <img class="sm:w-auto" src="{{ asset('new_frontend/Assets/Group 23364.png') }}" alt="Local Experiences">
-                    <div class="flex flex-col grow gap-5">
-                        <div class="text-xl font-bold">Local Experiences</div>
-                        <div>Authentic cultural immersion with expert local guides.</div>
-                    </div>
+            </div>
+            <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
+                <img class="w-12 h-12 sm:w-16 sm:h-16 object-contain flex-shrink-0" src="{{ asset('new_frontend/Assets/hand.png') }}" alt="">
+                <div class="flex flex-col grow gap-5">
+                <div class="text-xl font-bold">Handpicked Experiences</div>
+                <div>Enjoy top-rated accommodations and unique activities.</div>
                 </div>
-                <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
-                    <img class="sm:w-auto" src="{{ asset('new_frontend/Assets/Group 23364.png') }}" alt="Flexible Schedule">
-                    <div class="flex flex-col grow gap-5">
-                        <div class="text-xl font-bold">Flexible Schedule</div>
-                        <div>Adjust your plans as you go with no rigid timelines.</div>
-                    </div>
+            </div>
+            <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
+                <img class="w-12 h-12 sm:w-16 sm:h-16 object-contain flex-shrink-0" src="{{ asset('new_frontend/Assets/pri.png') }}" alt="">
+                <div class="flex flex-col grow gap-5">
+                <div class="text-xl font-bold">Private Transport & Local Guides</div>
+                <div>Hassle-free travel with expert assistance.</div>
                 </div>
-                <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
-                    <img class="sm:w-auto" src="{{ asset('new_frontend/Assets/Group 23364.png') }}" alt="Premium Accommodations">
-                    <div class="flex flex-col grow gap-5">
-                        <div class="text-xl font-bold">Premium Accommodations</div>
-                        <div>Handpicked hotels and resorts that match your preferences.</div>
-                    </div>
+            </div>
+            <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
+                <img class="w-12 h-12 sm:w-16 sm:h-16 object-contain flex-shrink-0" src="{{ asset('new_frontend/Assets/flex.png') }}" alt="">
+                <div class="flex flex-col grow gap-5">
+                <div class="text-xl font-bold">Flexible Budget Options</div>
+                <div>Tours designed to match your budget and preferences.</div>
                 </div>
-                <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
-                    <img class="sm:w-auto" src="{{ asset('new_frontend/Assets/Group 23364.png') }}" alt="Private Transport">
-                    <div class="flex flex-col grow gap-5">
-                        <div class="text-xl font-bold">Private Transport</div>
-                        <div>Comfortable and convenient travel between destinations.</div>
-                    </div>
+            </div>
+            <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
+                <img class="w-12 h-12 sm:w-16 sm:h-16 object-contain flex-shrink-0" src="{{ asset('new_frontend/Assets/seam.png') }}" alt="">
+                <div class="flex flex-col grow gap-5">
+                <div class="text-xl font-bold">Seamless Free Planning</div>
+                <div>We handle all the details, so you can enjoy a hassle-free and perfectly organized trip.</div>
                 </div>
-                <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
-                    <img class="sm:w-auto" src="{{ asset('new_frontend/Assets/Group 23364.png') }}" alt="Personalized Service">
-                    <div class="flex flex-col grow gap-5">
-                        <div class="text-xl font-bold">Personalized Service</div>
-                        <div>Dedicated support throughout your journey in Sri Lanka.</div>
-                    </div>
+            </div>
+            <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
+                <img class="w-12 h-12 sm:w-16 sm:h-16 object-contain flex-shrink-0" src="{{ asset('new_frontend/Assets/uniq.png') }}" alt="">
+                <div class="flex flex-col grow gap-5">
+                <div class="text-xl font-bold">Unique Experiences</div>
+                <div>Discover hidden gems, local traditions, and off-the-beaten-path adventures curated just for you.</div>
                 </div>
+            </div>
             </div>
         </div>
 
@@ -238,25 +238,6 @@
             </div>
         </section>
 
-        <!-- Call to Action Section -->
-        {{-- <div class="w-full py-16 bg-[#f8f9fa] text-black">
-            <div class="max-w-6xl mx-auto px-5 sm:px-20">
-                <div class="flex flex-col sm:flex-row gap-10 items-center">
-                    <div class="sm:w-1/2">
-                        <h2 class="text-3xl sm:text-4xl font-black font-pri mb-6">Ready to Book Your Perfect Sri Lankan Adventure?</h2>
-                        <p class="text-gray-700 mb-8">
-                            Whether you prefer a tailor-made journey or a comprehensive round tour, our team is ready to help you plan the perfect Sri Lankan adventure. Contact us today to start planning your dream vacation!
-                        </p>
-                        <div class="flex flex-wrap gap-4">
-                            <a href="{{ route('contact') }}" class="bg-[#FF9933] hover:bg-[#ffab58] text-white font-bold py-3 px-8 rounded-full">CONTACT US</a>
-                            <a href="#" class="border-2 border-[#02515A] hover:bg-[#02515A] hover:text-white text-[#02515A] font-bold py-3 px-8 rounded-full transition-colors">REQUEST A QUOTE</a>
-                        </div>
-                    </div>
-                    <div class="sm:w-1/2">
-                        <img src="{{ asset('new_frontend/Assets/cta-image.jpg') }}" alt="Sri Lanka Tours" class="rounded-lg shadow-lg w-full h-auto object-cover">
-                    </div>
-                </div>
-            </div>
-        </div> --}}
+        
     </div>
 @endsection

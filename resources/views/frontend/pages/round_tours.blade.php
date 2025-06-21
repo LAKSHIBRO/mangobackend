@@ -70,48 +70,103 @@
 
             <div class="w-full flex flex-wrap px-5 sm:px-20 pb-20">
                 <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
-                    <img class="sm:w-auto" src="{{ asset('new_frontend/Assets/Group 23364.png') }}" alt="Complete Experience">
+                    <img src="{{ asset('new_frontend/Assets/landmark.png') }}" alt="Cultural & Heritage Tour" class="w-12 h-12 sm:w-16 sm:h-16 object-contain flex-shrink-0">
                     <div class="flex flex-col grow gap-5">
-                        <div class="text-xl font-bold">Complete Experience</div>
-                        <div>See all of Sri Lanka's highlights in one well-planned journey.</div>
+                        <div class="text-xl font-bold">Cultural & Heritage Tour</div>
+                        <div>Explore ancient cities, temples, and UNESCO heritage sites.</div>
                     </div>
                 </div>
                 <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
-                    <img class="sm:w-auto" src="{{ asset('new_frontend/Assets/Group 23364.png') }}" alt="Expert Guides">
+                    <img src="{{ asset('new_frontend/Assets/leaf.png') }}" alt="Wildlife & Nature Tour" class="w-12 h-12 sm:w-16 sm:h-16 object-contain flex-shrink-0">
                     <div class="flex flex-col grow gap-5">
-                        <div class="text-xl font-bold">Expert Guides</div>
-                        <div>Learn from knowledgeable local guides at each destination.</div>
+                        <div class="text-xl font-bold">Wildlife & Nature Tour</div>
+                        <div>Discover national parks, safaris, and breathtaking landscapes.</div>
                     </div>
                 </div>
                 <div class="sm:w-1/3 w-full flex gap-10 sm:px-10 py-10 sm:py-20">
-                    <img class="sm:w-auto" src="{{ asset('new_frontend/Assets/Group 23364.png') }}" alt="Hassle-Free Travel">
+                    <img src="{{ asset('new_frontend/Assets/umbrella.png') }}" alt="Coastal & Beach Tour" class="w-12 h-12 sm:w-16 sm:h-16 object-contain flex-shrink-0">
                     <div class="flex flex-col grow gap-5">
-                        <div class="text-xl font-bold">Hassle-Free Travel</div>
-                        <div>Enjoy seamless transportation and accommodations throughout.</div>
+                        <div class="text-xl font-bold">Coastal & Beach Tour</div>
+                        <div>Relax on pristine beaches and visit picturesque seaside towns.</div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Call to Action -->
-        <div class="w-full py-16 bg-[#f8f9fa] text-black">
-            <div class="max-w-6xl mx-auto px-5 sm:px-20">
-                <div class="flex flex-col sm:flex-row gap-10 items-center">
-                    <div class="sm:w-1/2">
-                        <h2 class="text-3xl sm:text-4xl font-black font-pri mb-6">Ready to Explore Sri Lanka?</h2>
-                        <p class="text-gray-700 mb-8">
-                            Book your round tour today and experience the best of Sri Lanka in one amazing journey. Our expert team is ready to help you choose the perfect itinerary.
-                        </p>
-                        <div class="flex flex-wrap gap-4">
-                            <a href="{{ route('contact') }}" class="bg-[#02515A] hover:bg-[#03697a] text-white font-bold py-3 px-8 rounded-full">CONTACT US</a>
-                            <a href="#" class="border-2 border-[#02515A] hover:bg-[#02515A] hover:text-white text-[#02515A] font-bold py-3 px-8 rounded-full transition-colors">REQUEST A QUOTE</a>
+<!-- Gallery Section -->
+        <section class="pb-4 bg-white" id="gallery">
+            <div class="w-full flex-wrap sm:flex-nowrap flex">
+                <div class="h-auto max-w-1/2 sm:max-w-1/7 sm:w-1/7 grow p-[1px] sm:p-1 group cursor-pointer">
+                    <div class="relative overflow-hidden">
+                        <img src="{{ asset('new_frontend/Assets/img(10).png') }}" class="w-full h-auto transition-all duration-500 transform group-hover:scale-110" alt="Beach view">
+                        <div class="w-full opacity-0 group-hover:opacity-100 duration-300 h-full top-0 absolute flex justify-center items-center p-5">
+                            <div class="w-full h-full absolute flex justify-center items-center bg-black/50">
+                                <img src="{{ asset('new_frontend/Assets/Group 23469.png') }}" alt="View image">
+                            </div>
                         </div>
                     </div>
-                    <div class="sm:w-1/2">
-                        <img src="{{ asset('new_frontend/Assets/img(9).png') }}" alt="Sri Lanka Round Tours" class="rounded-lg shadow-lg w-full">
+                </div>
+                <div class="h-auto max-w-1/2 sm:max-w-1/7 sm:w-1/7 grow p-[1px] sm:p-1 group cursor-pointer">
+                    <div class="relative overflow-hidden">
+                        <img src="{{ asset('new_frontend/Assets/img(11).png') }}" class="w-full h-auto transition-all duration-500 transform group-hover:scale-110" alt="Mountain view">
+                        <div class="w-full opacity-0 group-hover:opacity-100 duration-300 h-full top-0 absolute flex justify-center items-center p-5">
+                            <div class="w-full h-full absolute flex justify-center items-center bg-black/50">
+                                <img src="{{ asset('new_frontend/Assets/Group 23469.png') }}" alt="View image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-auto max-w-1/2 sm:max-w-1/7 sm:w-1/7 grow p-[1px] sm:p-1 group cursor-pointer">
+                    <div class="relative overflow-hidden">
+                        <img src="{{ asset('new_frontend/Assets/img(12).png') }}" class="w-full h-auto transition-all duration-500 transform group-hover:scale-110" alt="Temple view">
+                        <div class="w-full opacity-0 group-hover:opacity-100 duration-300 h-full top-0 absolute flex justify-center items-center p-5">
+                            <div class="w-full h-full absolute flex justify-center items-center bg-black/50">
+                                <img src="{{ asset('new_frontend/Assets/Group 23469.png') }}" alt="View image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-auto max-w-1/2 sm:max-w-1/7 sm:w-1/7 grow p-[1px] sm:p-1 group cursor-pointer">
+                    <div class="relative overflow-hidden">
+                        <img src="{{ asset('new_frontend/Assets/img(13).png') }}" class="w-full h-auto transition-all duration-500 transform group-hover:scale-110" alt="Wildlife view">
+                        <div class="w-full opacity-0 group-hover:opacity-100 duration-300 h-full top-0 absolute flex justify-center items-center p-5">
+                            <div class="w-full h-full absolute flex justify-center items-center bg-black/50">
+                                <img src="{{ asset('new_frontend/Assets/Group 23469.png') }}" alt="View image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-auto max-w-1/2 sm:max-w-1/7 sm:w-1/7 grow p-[1px] sm:p-1 group cursor-pointer">
+                    <div class="relative overflow-hidden">
+                        <img src="{{ asset('new_frontend/Assets/img(14).png') }}" class="w-full h-auto transition-all duration-500 transform group-hover:scale-110" alt="Cultural view">
+                        <div class="w-full opacity-0 group-hover:opacity-100 duration-300 h-full top-0 absolute flex justify-center items-center p-5">
+                            <div class="w-full h-full absolute flex justify-center items-center bg-black/50">
+                                <img src="{{ asset('new_frontend/Assets/Group 23469.png') }}" alt="View image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-auto max-w-1/2 sm:max-w-1/7 sm:w-1/7 grow p-[1px] sm:p-1 group cursor-pointer">
+                    <div class="relative overflow-hidden">
+                        <img src="{{ asset('new_frontend/Assets/img(15).png') }}" class="w-full h-auto transition-all duration-500 transform group-hover:scale-110" alt="Resort view">
+                        <div class="w-full opacity-0 group-hover:opacity-100 duration-300 h-full top-0 absolute flex justify-center items-center p-5">
+                            <div class="w-full h-full absolute flex justify-center items-center bg-black/50">
+                                <img src="{{ asset('new_frontend/Assets/Group 23469.png') }}" alt="View image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-auto max-w-1/2 sm:max-w-1/7 sm:w-1/7 grow p-[1px] sm:p-1 group cursor-pointer">
+                    <div class="relative overflow-hidden">
+                        <img src="{{ asset('new_frontend/Assets/img(15).png') }}" class="w-full h-auto transition-all duration-500 transform group-hover:scale-110" alt="Resort view">
+                        <div class="w-full opacity-0 group-hover:opacity-100 duration-300 h-full top-0 absolute flex justify-center items-center p-5">
+                            <div class="w-full h-full absolute flex justify-center items-center bg-black/50">
+                                <img src="{{ asset('new_frontend/Assets/Group 23469.png') }}" alt="View image">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+        
     </div>
 @endsection
