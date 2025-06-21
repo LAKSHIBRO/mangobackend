@@ -19,7 +19,7 @@ class TourPackageController extends Controller
     {
         $tourPackage = TourPackage::where('slug', $slug)
             ->where('active', true)
-            ->with('itinerary')
+            ->with(['itinerary', 'galleryImages'])
             ->firstOrFail();
 
         return view('frontend.pages.tour_package_detail', compact('tourPackage'));

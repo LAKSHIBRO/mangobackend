@@ -1,20 +1,25 @@
 /**
  * Tour Package Form JavaScript
  * Handles all functionality for the tour package creation/editing form
+ * Last Updated: June 20, 2025
  */
 
-// Current day counter for itinerary
-var dayCounter = 1;
+// Current day counter for itinerary (can be overridden by edit mode)
+window.dayCounter = 1;
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Count existing itinerary days to set the initial counter value correctly
-    const itineraryContainer = document.getElementById('itineraryContainer');
-    if (itineraryContainer) {
-        const existingDays = itineraryContainer.querySelectorAll('.itinerary-item');
-        if (existingDays && existingDays.length > 0) {
-            dayCounter = existingDays.length;
+    // Count existing itinerary days to set the initial counter value if not already set
+    // Allows edit mode to override this counter
+    if (!window.dayCounter || window.dayCounter === 1) {
+        const itineraryContainer = document.getElementById('itineraryContainer');
+        if (itineraryContainer) {
+            const existingDays = itineraryContainer.querySelectorAll('.itinerary-item');
+            if (existingDays && existingDays.length > 0) {
+                window.dayCounter = existingDays.length;
+            }
         }
     }
+
     // Initialize TinyMCE
     if (typeof tinymce !== 'undefined') {
         // Main description editor
@@ -26,31 +31,159 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Initialize all itinerary description editors
-        document.querySelectorAll('.itinerary-description').forEach(function(textarea) {
-            if (textarea.id) {
-                tinymce.init({
-                    selector: '#' + textarea.id,
-                    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                    height: 200
-                });
-            }
-        });
+        initTinyMCEForItinerary();
     }
 
-    // Image preview functionality
+    // Image preview functionality for the main featured image
     const imageInput = document.getElementById('image');
     if (imageInput) {
         imageInput.onchange = function(evt) {
             const [file] = this.files;
             if (file) {
                 const preview = document.getElementById('imagePreview');
-                preview.src = URL.createObjectURL(file);
-                preview.style.display = 'block';
+                if (preview) {
+                    preview.src = URL.createObjectURL(file);
+                    preview.style.display = 'block';
+                }
             }
         };
     }
 
+    // Gallery Images Functionality
+    initGalleryFunctionality();
+
+    // Initialize included/excluded items functionality
+    initIncludedExcludedItems();
+
+    // Initialize itinerary functionality
+    initItineraryFunctionality();
+
+    // If in edit mode, initialize edit-specific functionality
+    if (document.querySelector('.edit-mode')) {
+        initTourPackageEditMode();
+    }
+});
+
+/**
+ * Initialize TinyMCE for itinerary descriptions
+ */
+function initTinyMCEForItinerary() {
+    if (typeof tinymce !== 'undefined') {
+        tinymce.init({
+            selector: '.itinerary-description',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            height: 200
+        });
+    }
+}
+
+/**
+ * Initialize gallery images functionality
+ */
+function initGalleryFunctionality() {
+    const galleryContainer = document.getElementById('galleryImagesContainer');
+    const addGalleryImageBtn = document.getElementById('addGalleryImage');
+
+    if (galleryContainer && addGalleryImageBtn) {
+        // Setup initial gallery image preview
+        setupGalleryImagePreviews();
+
+        // Add new gallery image
+        addGalleryImageBtn.addEventListener('click', function() {
+            const galleryItems = galleryContainer.querySelectorAll('.gallery-item');
+            const lastItem = galleryItems[galleryItems.length - 1];
+            const newItem = lastItem.cloneNode(true);
+
+            // Clear input values
+            const fileInput = newItem.querySelector('.gallery-image-input');
+            if (fileInput) {
+                fileInput.value = '';
+            }
+
+            const captionInput = newItem.querySelector('input[name="gallery_captions[]"]');
+            if (captionInput) {
+                captionInput.value = '';
+            }
+
+            // Reset preview
+            const previewImg = newItem.querySelector('.gallery-preview');
+            if (previewImg) {
+                previewImg.style.display = 'none';
+                previewImg.src = '#';
+            }
+
+            // Enable remove button
+            const removeBtn = newItem.querySelector('.remove-gallery-item');
+            if (removeBtn) {
+                removeBtn.disabled = false;
+            }
+
+            // Add to container
+            galleryContainer.appendChild(newItem);
+
+            // Reinitialize preview functionality for the new item
+            setupGalleryImagePreviews();
+
+            // Enable all remove buttons if we have more than one gallery item
+            updateGalleryRemoveButtons();
+        });
+
+        // Remove gallery image
+        galleryContainer.addEventListener('click', function(e) {
+            if (e.target.closest('.remove-gallery-item')) {
+                const button = e.target.closest('.remove-gallery-item');
+                const galleryItem = button.closest('.gallery-item');
+
+                // Only remove if we have more than one gallery item
+                const galleryItems = galleryContainer.querySelectorAll('.gallery-item');
+                if (galleryItems.length > 1) {
+                    galleryItem.remove();
+                    updateGalleryRemoveButtons();
+                }
+            }
+        });
+    }
+}
+
+/**
+ * Helper function to setup gallery image previews
+ */
+function setupGalleryImagePreviews() {
+        const galleryImageInputs = document.querySelectorAll('.gallery-image-input');
+
+        galleryImageInputs.forEach(function(input) {
+            input.onchange = function() {
+                const [file] = this.files;
+                if (file) {
+                    const galleryItem = this.closest('.gallery-item');
+                    const preview = galleryItem.querySelector('.gallery-preview');
+
+                    if (preview) {
+                        preview.src = URL.createObjectURL(file);
+                        preview.style.display = 'block';
+                    }
+                }
+            };
+        });
+    }
+
+/**
+ * Helper function to update gallery remove buttons
+ */
+function updateGalleryRemoveButtons() {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const buttons = document.querySelectorAll('.remove-gallery-item');
+
+    buttons.forEach(function(button) {
+        button.disabled = galleryItems.length <= 1;
+    });
+}
+
+/**
+ * Initialize included/excluded items functionality
+ */
+function initIncludedExcludedItems() {
     // ===== INCLUDED ITEMS =====
     const addIncludedItemBtn = document.getElementById('addIncludedItem');
     if (addIncludedItemBtn) {
@@ -85,7 +218,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (excludedContainer) {
         updateItemCounter(excludedContainer, 'excluded');
     }
+}
 
+/**
+ * Initialize itinerary functionality
+ */
+function initItineraryFunctionality() {
     // ===== ITINERARY DAYS =====
     const addItineraryDayBtn = document.getElementById('addItineraryDay');
     if (addItineraryDayBtn) {
@@ -98,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
             removeItineraryDay(e.target.closest('.remove-itinerary'));
         }
     });
-});
+}
 
 /**
  * Add a new item to a container (for included/excluded items)
@@ -351,6 +489,34 @@ function removeItineraryDay(button) {
         });
 
         // Update the day counter
-        dayCounter = days.length;
+        window.dayCounter = days.length;
     }, 300);
+}
+
+/**
+ * Function to initialize edit mode specific functionality
+ * This will be called when editing an existing tour package
+ */
+function initTourPackageEditMode() {
+    console.log('Tour Package Edit Mode initialized');
+
+    // Add event listeners for the delete gallery image toggles
+    document.querySelectorAll('.delete-gallery-toggle').forEach(toggle => {
+        toggle.addEventListener('change', function() {
+            const card = this.closest('.card');
+            const statusText = card.querySelector('.image-status');
+
+            if (statusText) {
+                if (this.checked) {
+                    statusText.textContent = 'Image will be deleted';
+                    statusText.classList.add('text-danger');
+                    card.classList.add('opacity-50');
+                } else {
+                    statusText.textContent = 'Image will be kept';
+                    statusText.classList.remove('text-danger');
+                    card.classList.remove('opacity-50');
+                }
+            }
+        });
+    });
 }

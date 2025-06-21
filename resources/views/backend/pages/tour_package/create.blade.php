@@ -89,6 +89,14 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
+                            <label for="peoples" class="form-label">Maximum People</label>
+                            <input type="number" class="form-control" id="peoples" name="peoples" placeholder="Maximum number of people" value="{{ old('peoples') }}" min="1">
+                            @error('peoples')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-3">
                             <label for="locations" class="form-label">Locations <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="locations" name="locations" placeholder="e.g. Kandy | Colombo | Galle" value="{{ old('locations') }}" required>
                             @error('locations')
@@ -138,15 +146,63 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="mb-3">
-                                <label for="image" class="form-label">Package Image <span class="text-danger">*</span></label>
+                                <label for="image" class="form-label">Main Package Image <span class="text-danger">*</span></label>
                                 <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
-                                <div class="form-text">Recommended size: 1200px x 800px</div>
+                                <div class="form-text">Recommended size: 1200px x 800px. This will be the main image for the tour package.</div>
                                 @error('image')
                                 <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="mt-3">
+                            <div class="mt-3 mb-4">
                                 <img id="imagePreview" src="#" alt="Preview" style="max-width: 300px; max-height: 200px; display: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="card-title">Gallery Images</div>
+                    <button type="button" class="btn btn-sm btn-success" id="addGalleryImage">
+                        <i class="fi fi-rr-add"></i> Add Image
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info mb-3">
+                        <i class="fi fi-rr-info-circle me-2"></i>
+                        Add multiple images for the tour package gallery. These will be displayed in the detailed view of the tour.
+                    </div>
+
+                    @error('gallery_images')
+                    <div class="alert alert-danger py-2 mb-3">{{ $message }}</div>
+                    @enderror
+                    @error('gallery_images.*')
+                    <div class="alert alert-danger py-2 mb-3">{{ $message }}</div>
+                    @enderror
+
+                    <div id="galleryImagesContainer" class="row">
+                        <div class="col-md-4 gallery-item mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Gallery Image</label>
+                                        <input type="file" class="form-control gallery-image-input" name="gallery_images[]" accept="image/*">
+                                        <div class="form-text">Recommended size: 1200px x 800px</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Caption (Optional)</label>
+                                        <input type="text" class="form-control" name="gallery_captions[]" placeholder="Enter image caption">
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <img class="gallery-preview" src="#" alt="Preview" style="max-width: 100%; max-height: 150px; display: none;">
+                                    </div>
+                                </div>
+                                <div class="card-footer p-2">
+                                    <button type="button" class="btn btn-sm btn-danger w-100 remove-gallery-item" disabled>
+                                        <i class="fi fi-rr-trash"></i> Remove
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -352,7 +408,7 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/tour-package-form.js') }}"></script>
+<script src="{{ asset('js/tour-package-form-new.js') }}"></script>
 <script>
     // Ensure TinyMCE content is synchronized with textareas before form submission
     document.addEventListener('DOMContentLoaded', function() {
@@ -467,6 +523,48 @@
     /* Itinerary container spacing */
     #itineraryContainer {
         margin-bottom: 2rem;
+    }
+
+    /* Gallery item styles */
+    .gallery-item {
+        transition: all 0.3s ease;
+    }
+
+    .gallery-item .card {
+        border: none;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+        overflow: hidden;
+        border-radius: 8px;
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .gallery-item .card:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        transform: translateY(-3px);
+    }
+
+    .gallery-item .card-footer {
+        background: none;
+        border-top: 1px solid #eee;
+    }
+
+    .gallery-preview {
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Add Gallery Image button styling */
+    #addGalleryImage {
+        background: linear-gradient(135deg, #02515A 0%, #086571 100%);
+        border: none;
+        box-shadow: 0 2px 8px rgba(2, 81, 90, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    #addGalleryImage:hover {
+        box-shadow: 0 4px 12px rgba(2, 81, 90, 0.3);
+        transform: translateY(-1px);
     }
 </style>
 @endsection

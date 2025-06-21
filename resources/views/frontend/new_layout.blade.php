@@ -21,6 +21,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
     @yield('additional_css')
+    @yield('styles')
 </head>
 <body>
     <div class="w-screen min-h-screen flex justify-center items-center flex-col text-white">
@@ -32,5 +33,6 @@
     </div>
 
     @yield('additional_js')
+    @yield('scripts')
 </body>
 </html>

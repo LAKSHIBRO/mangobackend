@@ -15,6 +15,7 @@ class TourPackage extends Model
         'type', // 'tailor-made' or 'round-tour'
         'price',
         'duration',
+        'peoples', // maximum number of people allowed
         'short_description',
         'description',
         'image',
@@ -35,6 +36,14 @@ class TourPackage extends Model
     public function itinerary()
     {
         return $this->hasMany(TourItinerary::class);
+    }
+
+    /**
+     * Get the gallery images associated with this tour package.
+     */
+    public function galleryImages()
+    {
+        return $this->hasMany(GalleryImages::class, 'tour_package_id');
     }
 
     /**

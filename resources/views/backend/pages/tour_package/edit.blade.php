@@ -63,6 +63,14 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
+                            <label for="peoples" class="form-label">Maximum People</label>
+                            <input type="number" class="form-control" id="peoples" name="peoples" value="{{ old('peoples', $tourPackage->peoples) }}" placeholder="Maximum number of people" min="1">
+                            @error('peoples')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-3">
                             <label for="locations" class="form-label">Locations <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="locations" name="locations" value="{{ old('locations', $tourPackage->locations) }}" required placeholder="e.g. Kandy, Galle, Colombo">
                             @error('locations')
@@ -111,6 +119,89 @@
                             @error('image')
                             <div class="text-danger mt-1">{{ $message }}</div>
                             @enderror
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="card-title">Gallery Images</div>
+                    <button type="button" class="btn btn-sm btn-success" id="addGalleryImage">
+                        <i class="fi fi-rr-add"></i> Add Image
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info mb-3">
+                        <i class="fi fi-rr-info-circle me-2"></i>
+                        Add or manage multiple images for the tour package gallery. These will be displayed in a slider on the detailed view of the tour.
+                    </div>
+
+                    @error('gallery_images')
+                    <div class="alert alert-danger py-2 mb-3">{{ $message }}</div>
+                    @enderror
+                    @error('gallery_images.*')
+                    <div class="alert alert-danger py-2 mb-3">{{ $message }}</div>
+                    @enderror
+
+                    <!-- Existing Gallery Images -->
+                    @if($tourPackage->galleryImages && $tourPackage->galleryImages->count() > 0)
+                        <div class="mb-4">
+                            <h5 class="mb-3">Current Gallery Images</h5>
+                            <div class="row">
+                                @foreach($tourPackage->galleryImages as $galleryImage)
+                                    <div class="col-md-4 mb-4">
+                                        <div class="card h-100">
+                                            <div class="position-relative">
+                                                <img src="{{ asset('storage/' . $galleryImage->image_path) }}" class="card-img-top" alt="Gallery Image" style="height: 150px; object-fit: cover;">
+                                                <div class="position-absolute top-0 end-0 p-2">
+                                                    <div class="form-check form-switch bg-white rounded-pill shadow-sm px-2">
+                                                        <input class="form-check-input delete-gallery-toggle" type="checkbox" name="delete_gallery_images[]" value="{{ $galleryImage->id }}" id="delete-gallery-{{ $galleryImage->id }}">
+                                                        <label class="form-check-label small" for="delete-gallery-{{ $galleryImage->id }}">Delete</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <h6 class="card-title fw-bold">Caption</h6>
+                                                <input type="text" class="form-control form-control-sm" name="gallery_caption_updates[{{ $galleryImage->id }}]" value="{{ $galleryImage->caption ?? '' }}" placeholder="Enter image caption">
+                                            </div>
+                                            <div class="card-footer bg-light p-2">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <small class="text-muted image-status">Image will be kept</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- New Gallery Images -->
+                    <h5 class="mb-3">Add New Gallery Images</h5>
+                    <div id="galleryImagesContainer" class="row">
+                        <div class="col-md-4 gallery-item mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Gallery Image</label>
+                                        <input type="file" class="form-control gallery-image-input" name="gallery_images[]" accept="image/*">
+                                        <div class="form-text">Recommended size: 1200px x 800px</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Caption (Optional)</label>
+                                        <input type="text" class="form-control" name="gallery_captions[]" placeholder="Enter image caption">
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <img class="gallery-preview" src="#" alt="Preview" style="max-width: 100%; max-height: 150px; display: none;">
+                                    </div>
+                                </div>
+                                <div class="card-footer p-2">
+                                    <button type="button" class="btn btn-sm btn-danger w-100 remove-gallery-item" disabled>
+                                        <i class="fi fi-rr-trash"></i> Remove
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -226,180 +317,92 @@
 @endsection
 
 @push('scripts')
+<script src="{{ asset('js/tour-package-form-new.js') }}"></script>
 <script>
-    // Initialize TinyMCE
-    tinymce.init({
-        selector: '.tinymce',
-        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-        height: 400
-    });
-
-    // Initialize TinyMCE for itinerary descriptions
-    function initTinyMCEForItinerary() {
-        tinymce.init({
-            selector: '.itinerary-description',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-            height: 200
-        });
-    }    // Make sure to add these event listeners after the DOM is fully loaded
+    // Set the initial day counter for itinerary in edit mode
     document.addEventListener('DOMContentLoaded', function() {
-        // Add more included items
-        document.getElementById('addIncludedItem').addEventListener('click', function() {
-            const container = document.getElementById('includedItemsContainer');
-            const newItem = document.createElement('div');
-            newItem.classList.add('input-group', 'mb-3');
+        window.dayCounter = {{ count($tourPackage->itinerary) }};
 
-            newItem.innerHTML = `
-                <input type="text" class="form-control" name="included[]" placeholder="Enter included item" required>
-                <button class="btn btn-danger remove-item" type="button">
-                    <i class="fi fi-rr-trash"></i>
-                </button>
-            `;
-            container.appendChild(newItem);
-
-            // Enable all remove buttons if there's more than one item
-            if (container.children.length > 1) {
-                const buttons = container.querySelectorAll('.remove-item');
-                buttons.forEach(btn => btn.disabled = false);
-            }
-        });
-
-        // Add more excluded items
-        document.getElementById('addExcludedItem').addEventListener('click', function() {
-            const container = document.getElementById('excludedItemsContainer');
-            const newItem = document.createElement('div');
-            newItem.classList.add('input-group', 'mb-3');
-
-            newItem.innerHTML = `
-                <input type="text" class="form-control" name="excluded[]" placeholder="Enter excluded item" required>
-                <button class="btn btn-danger remove-item" type="button">
-                    <i class="fi fi-rr-trash"></i>
-                </button>
-            `;
-        container.appendChild(newItem);
-
-        // Enable all remove buttons if there's more than one item
-        if (container.children.length > 1) {
-            const buttons = container.querySelectorAll('.remove-item');
-            buttons.forEach(btn => btn.disabled = false);
+        // Initialize specific functionality for edit mode
+        if (typeof initTourPackageEditMode === 'function') {
+            initTourPackageEditMode();
         }
-    });
-
-    // Event delegation for removing included/excluded items
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.remove-item')) {
-            const button = e.target.closest('.remove-item');
-            const container = button.closest('.input-group').parentElement;
-            button.closest('.input-group').remove();
-
-            // If only one item remains, disable its remove button
-            if (container.children.length === 1) {
-                const lastButton = container.querySelector('.remove-item');
-                if (lastButton) lastButton.disabled = true;
-            }
-        }
-    });
-
-    // Itinerary Days
-    let dayCounter = {{ count($tourPackage->itinerary) }};
-
-    document.getElementById('addItineraryDay').addEventListener('click', function() {
-        dayCounter++;
-        const container = document.getElementById('itineraryContainer');
-        const newDay = document.createElement('div');
-        newDay.classList.add('itinerary-item', 'card', 'mb-4');
-
-        newDay.innerHTML = `
-            <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Day ${dayCounter}</h5>
-                <button type="button" class="btn btn-sm btn-danger remove-itinerary">
-                    <i class="fi fi-rr-trash"></i> Remove
-                </button>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <input type="hidden" name="itinerary[${dayCounter-1}][day]" value="${dayCounter}" class="day-number">
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Title <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="itinerary[${dayCounter-1}][title]" required>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Location <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="itinerary[${dayCounter-1}][location]" required>
-                    </div>
-
-                    <div class="col-12 mb-3">
-                        <label class="form-label">Description <span class="text-danger">*</span></label>
-                        <textarea class="form-control itinerary-description" name="itinerary[${dayCounter-1}][description]" rows="4" required></textarea>
-                    </div>
-
-                    <div class="col-12">
-                        <label class="form-label">Image (Optional)</label>
-                        <input type="file" class="form-control itinerary-image" name="itinerary[${dayCounter-1}][image]" accept="image/*">
-                    </div>
-                </div>
-            </div>
-        `;
-
-        container.appendChild(newDay);
-
-        // Enable all remove buttons if there's more than one day
-        if (container.children.length > 1) {
-            const buttons = container.querySelectorAll('.remove-itinerary');
-            buttons.forEach(btn => btn.disabled = false);
-        }
-
-        // Initialize TinyMCE for the new textarea
-        setTimeout(function() {
-            tinymce.init({
-                selector: `textarea[name="itinerary[${dayCounter-1}][description]"]`,
-                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                height: 200
-            });
-        }, 0);
-    });
-
-    // Remove itinerary day
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.remove-itinerary')) {
-            const button = e.target.closest('.remove-itinerary');
-            const container = document.getElementById('itineraryContainer');
-            button.closest('.itinerary-item').remove();
-
-            // If only one day remains, disable its remove button
-            if (container.children.length === 1) {
-                const lastButton = container.querySelector('.remove-itinerary');
-                if (lastButton) lastButton.disabled = true;
-            }
-
-            // Renumber the days
-            const days = container.querySelectorAll('.itinerary-item');
-            days.forEach((day, index) => {
-                const dayNumber = index + 1;
-                day.querySelector('h5').textContent = `Day ${dayNumber}`;
-                day.querySelector('.day-number').value = dayNumber;
-
-                // Update the name attributes to maintain the correct array indexing
-                day.querySelectorAll('input, textarea').forEach(input => {
-                    if (input.name) {
-                        input.name = input.name.replace(/itinerary\[\d+\]/, `itinerary[${index}]`);
-                    }
-                });
-            });
-
-            // Update the day counter
-            dayCounter = days.length;
-        }
-    });
-
-    // Initialize TinyMCE for the first itinerary day
-    document.addEventListener('DOMContentLoaded', function() {
-        initTinyMCEForItinerary();
     });
 </script>
+@endpush
+
+@push('styles')
+<style>
+    /* Gallery item styles */
+    .gallery-item {
+        transition: all 0.3s ease;
+    }
+
+    .gallery-item .card {
+        border: none;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+        overflow: hidden;
+        border-radius: 8px;
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .gallery-item .card:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        transform: translateY(-3px);
+    }
+
+    .gallery-item .card-footer {
+        background: none;
+        border-top: 1px solid #eee;
+    }
+
+    .gallery-preview {
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Add Gallery Image button styling */
+    #addGalleryImage {
+        background: linear-gradient(135deg, #02515A 0%, #086571 100%);
+        border: none;
+        box-shadow: 0 2px 8px rgba(2, 81, 90, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    #addGalleryImage:hover {
+        box-shadow: 0 4px 12px rgba(2, 81, 90, 0.3);
+        transform: translateY(-1px);
+    }
+
+    /* Existing gallery images styling */
+    .position-relative img {
+        transition: all 0.3s ease;
+    }
+
+    .delete-gallery-toggle:checked ~ .position-relative img {
+        filter: grayscale(100%);
+    }
+
+    .delete-gallery-toggle + label {
+        cursor: pointer;
+    }
+
+    .form-check.form-switch.bg-white {
+        opacity: 0.8;
+        transition: all 0.3s ease;
+    }
+
+    .form-check.form-switch.bg-white:hover {
+        opacity: 1;
+    }
+
+    .card-footer .image-status {
+        font-size: 0.85rem;
+    }
+
+    .text-danger {
+        color: #dc3545!important;
+    }
+</style>
 @endpush

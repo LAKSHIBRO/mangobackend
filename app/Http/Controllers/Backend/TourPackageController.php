@@ -40,6 +40,7 @@ class TourPackageController extends Controller
                 'type' => $request->type,
                 'price' => $request->price,
                 'duration' => $request->duration,
+                'peoples' => $request->peoples,
                 'short_description' => $request->short_description,
                 'description' => $request->description,
                 'image' => $imagePath,
@@ -49,6 +50,25 @@ class TourPackageController extends Controller
                 'featured' => $request->has('featured'),
                 'active' => $request->has('active'),
             ]);
+
+            // Handle gallery images if provided
+            if ($request->hasFile('gallery_images')) {
+                foreach ($request->file('gallery_images') as $index => $galleryImage) {
+                    // Generate a unique name for the gallery image
+                    $galleryImageName = time() . '-' . Str::slug($request->name) . '-gallery-' . ($index + 1) . '.' . $galleryImage->extension();
+                    $galleryImagePath = $galleryImage->storeAs('tour_packages/gallery', $galleryImageName, 'public');
+
+                    // Get the caption if available
+                    $caption = isset($request->gallery_captions[$index]) ? $request->gallery_captions[$index] : null;
+
+                    // Create gallery image record
+                    $tourPackage->galleryImages()->create([
+                        'image_path' => $galleryImagePath,
+                        'caption' => $caption,
+                        'sort_order' => $index + 1
+                    ]);
+                }
+            }
 
             // Sort the itinerary by day number to ensure correct order
             $itinerary = collect($request->itinerary)->sortBy('day')->values()->all();
@@ -87,7 +107,7 @@ class TourPackageController extends Controller
 
     public function edit($id)
     {
-        $tourPackage = TourPackage::with('itinerary')->findOrFail($id);
+        $tourPackage = TourPackage::with(['itinerary', 'galleryImages'])->findOrFail($id);
         return view('backend.pages.tour_package.edit', compact('tourPackage'));
     }
 
@@ -118,6 +138,7 @@ class TourPackageController extends Controller
                 'type' => $request->type,
                 'price' => $request->price,
                 'duration' => $request->duration,
+                'peoples' => $request->peoples,
                 'short_description' => $request->short_description,
                 'description' => $request->description,
                 'image' => $imagePath,
@@ -127,6 +148,48 @@ class TourPackageController extends Controller
                 'featured' => $request->has('featured'),
                 'active' => $request->has('active'),
             ]);
+
+            // Handle gallery images if provided
+            if ($request->hasFile('gallery_images')) {
+                foreach ($request->file('gallery_images') as $index => $galleryImage) {
+                    // Generate a unique name for the gallery image
+                    $galleryImageName = time() . '-' . Str::slug($request->name) . '-gallery-' . ($index + 1) . '.' . $galleryImage->extension();
+                    $galleryImagePath = $galleryImage->storeAs('tour_packages/gallery', $galleryImageName, 'public');
+
+                    // Get the caption if available
+                    $caption = isset($request->gallery_captions[$index]) ? $request->gallery_captions[$index] : null;
+
+                    // Create gallery image record
+                    $tourPackage->galleryImages()->create([
+                        'image_path' => $galleryImagePath,
+                        'caption' => $caption,
+                        'sort_order' => $index + 1
+                    ]);
+                }
+            }
+
+            // Handle deleted gallery images
+            if ($request->has('delete_gallery_images')) {
+                foreach ($request->delete_gallery_images as $imageId) {
+                    $galleryImage = $tourPackage->galleryImages()->find($imageId);
+                    if ($galleryImage) {
+                        // Delete the image file
+                        Storage::disk('public')->delete($galleryImage->image_path);
+                        // Delete the record
+                        $galleryImage->delete();
+                    }
+                }
+            }
+
+            // Update captions for existing gallery images
+            if ($request->has('gallery_caption_updates')) {
+                foreach ($request->gallery_caption_updates as $imageId => $caption) {
+                    $galleryImage = $tourPackage->galleryImages()->find($imageId);
+                    if ($galleryImage) {
+                        $galleryImage->update(['caption' => $caption]);
+                    }
+                }
+            }
 
             // Get existing itinerary item IDs
             $existingItineraryIds = $tourPackage->itinerary->pluck('id')->toArray();
@@ -270,17 +333,22 @@ class TourPackageController extends Controller
             'type' => 'required|string|in:tailor-made,round-tour',
             'price' => 'required|numeric',
             'duration' => 'required|string|max:100',
+            'peoples' => 'nullable|integer|min:1',
             'short_description' => 'required|string',
             'description' => 'required|string',
             'image' => $imageRule,
+            'gallery_images' => 'nullable|array',
+            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'gallery_captions' => 'nullable|array',
+            'gallery_captions.*' => 'nullable|string|max:255',
             'locations' => 'required|string',
             'included' => 'required|array',
             'excluded' => 'required|array',
             'featured' => 'boolean',
             'active' => 'boolean',
             'itinerary' => 'required|array',
-'itinerary.*.day' => 'required|integer',
-'itinerary.*.title' => 'required|string|max:255',
+            'itinerary.*.day' => 'required|integer',
+            'itinerary.*.title' => 'required|string|max:255',
             'itinerary.*.location' => 'required|string|max:255',
             'itinerary.*.description' => 'required|string',
             'itinerary.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',

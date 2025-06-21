@@ -4,6 +4,159 @@
 @section('description', $tourPackage->short_description)
 @section('keywords', 'Happy Mango Tours, Sri Lanka tours, ' . $tourPackage->name . ', ' . $tourPackage->locations)
 
+@section('styles')
+<style>
+    /* Tour Gallery Swiper Styles */
+    .tour-gallery-swiper {
+        width: 100%;
+        height: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+
+    }
+
+    .tour-gallery-swiper .swiper-slide {
+        position: relative;
+        text-align: center;
+        background: #f8f8f8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .tour-gallery-swiper .swiper-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .tour-gallery-swiper .swiper-slide:hover img {
+        transform: scale(1.03);
+    }
+
+    .caption-overlay {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .swiper-slide:hover .caption-overlay {
+        opacity: 1;
+    }
+
+    .tour-thumbs-swiper {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px 0;
+    }
+
+    .tour-thumbs-swiper .swiper-slide {
+        width: 25%;
+        height: 100%;
+        opacity: 0.6;
+        transition: all 0.3s ease;
+        border-radius: 4px;
+        overflow: hidden;
+        cursor: pointer;
+        display: none;
+    }
+
+    .tour-thumbs-swiper .swiper-slide-thumb-active {
+        opacity: 1;
+        border: 2px solid #FF9933;
+        transform: translateY(-3px);
+        box-shadow: 0 3px 10px rgba(255, 153, 51, 0.3);
+    }
+
+    /* Navigation buttons customization */
+    .swiper-button-next,
+    .swiper-button-prev {
+        color: #FF9933;
+        background: rgba(255, 255, 255, 0.8);
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+        background: rgba(255, 255, 255, 0.95);
+        transform: scale(1.1);
+        box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+    }
+
+    .swiper-button-next:after,
+    .swiper-button-prev:after {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .swiper-pagination-bullet {
+        transition: all 0.2s ease;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: #FF9933;
+        transform: scale(1.2);
+    }
+
+    /* Make gallery responsive */
+    @media (max-width: 768px) {
+        .tour-gallery-swiper {
+            height: 300px;
+        }
+
+        .tour-thumbs-swiper .swiper-slide {
+            width: 25%;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            width: 35px;
+            height: 35px;
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 14px;
+        }
+    }
+
+    /* Lightbox styling */
+    .lightbox-overlay {
+        animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Improve single image display when no gallery */
+    .sm\:w-2\3 > img.w-full {
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .sm\:w-2\3 > img.w-full:hover {
+        transform: scale(1.01);
+    }
+</style>
+@endsection
+
 @section('content')
     <!-- Hero Section with Package Name -->
     <div class="w-full py-24 flex flex-col justify-center items-center gap-5 bg-[#000000aa] bg-blend-multiply bg-cover bg-center">
@@ -49,9 +202,58 @@
                     </div>
                 </div>
 
-                <!-- Right Main Image -->
+                <!-- Right Main Image with Gallery Slider -->
                 <div class="sm:w-2/3 sm:p-20">
-                    <img class="w-full h-auto object-cover" src="{{ asset('storage/' . $tourPackage->image) }}" alt="{{ $tourPackage->name }}">
+                    @if($tourPackage->galleryImages && $tourPackage->galleryImages->count() > 0)
+                    <!-- Gallery Slider when there are gallery images -->
+                    <div class="swiper tour-gallery-swiper">
+                        <div class="swiper-wrapper">
+                            <!-- Main image as first slide -->
+                            <div class="swiper-slide">
+                                <img class="w-full h-auto object-cover rounded-lg" src="{{ asset('storage/' . $tourPackage->image) }}" alt="{{ $tourPackage->name }}">
+                            </div>
+
+                            <!-- Gallery images -->
+                            @foreach($tourPackage->galleryImages as $galleryImage)
+                                <div class="swiper-slide">
+                                    <img class="w-full h-auto object-cover rounded-lg" src="{{ asset('storage/' . $galleryImage->image_path) }}" alt="{{ $galleryImage->caption ?? $tourPackage->name }}">
+                                    @if($galleryImage->caption)
+                                        <div class="caption-overlay p-4 bg-black bg-opacity-50 absolute bottom-0 left-0 right-0 text-white">
+                                            {{ $galleryImage->caption }}
+                                        </div>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Add Navigation -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+
+                        <!-- Add Pagination -->
+                        <div class="swiper-pagination"></div>
+                    </div>
+
+                    <!-- Thumbnails Gallery -->
+                    <div class="swiper tour-thumbs-swiper mt-4">
+                        <div class="swiper-wrapper">
+                            <!-- Main image thumbnail -->
+                            <div class="swiper-slide">
+                                <img class="w-full h-20 object-cover rounded cursor-pointer" src="{{ asset('storage/' . $tourPackage->image) }}" alt="Thumbnail">
+                            </div>
+
+                            <!-- Gallery thumbnails -->
+                            @foreach($tourPackage->galleryImages as $galleryImage)
+                                <div class="swiper-slide">
+                                    <img class="w-full h-20 object-cover rounded cursor-pointer" src="{{ asset('storage/' . $galleryImage->image_path) }}" alt="Thumbnail">
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @else
+                    <!-- Show only the main image when there are no gallery images -->
+                    <img class="w-full h-auto object-cover rounded-lg" src="{{ asset('storage/' . $tourPackage->image) }}" alt="{{ $tourPackage->name }}">
+                @endif
                 </div>
             </div>
         </div>
@@ -89,7 +291,13 @@
                             <div class="bg-[#FF9933]/10 p-3 rounded-full shadow-sm">
                                 <img src="{{ asset('new_frontend/Assets/team-check-alt.png') }}" alt="Group Size" class="w-8 h-8">
                             </div>
-                            <div class="text-nowrap text-gray-800">25 people</div>
+                            <div class="text-nowrap text-gray-800">
+                                @if ($tourPackage->peoples)
+                                    Max {{ $tourPackage->peoples }} people
+                                @else
+                                    Group size varies
+                                @endif
+                            </div>
                         </div>
                     </div>
 
@@ -337,4 +545,90 @@
             });
         </script>
     @endif
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if gallery slider elements exist
+        const gallerySlider = document.querySelector(".tour-gallery-swiper");
+        const thumbsSlider = document.querySelector(".tour-thumbs-swiper");
+
+        if (gallerySlider && thumbsSlider) {
+            // Initialize thumbnail slider
+            var tourThumbsSwiper = new Swiper(".tour-thumbs-swiper", {
+                spaceBetween: 10,
+                slidesPerView: 4,
+                freeMode: true,
+                watchSlidesProgress: true,
+                breakpoints: {
+                    320: {
+                        slidesPerView: 3,
+                        spaceBetween: 5
+                    },
+                    480: {
+                        slidesPerView: 4,
+                        spaceBetween: 8
+                    },
+                    768: {
+                        slidesPerView: 4,
+                        spaceBetween: 10
+                    }
+                }
+            });
+
+            // Initialize main gallery slider
+            var tourGallerySwiper = new Swiper(".tour-gallery-swiper", {
+                spaceBetween: 10,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                thumbs: {
+                    swiper: tourThumbsSwiper,
+                },
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                effect: "fade",
+                fadeEffect: {
+                    crossFade: true
+                }
+            });
+
+            // Add lightbox functionality
+            const gallerySlides = document.querySelectorAll('.tour-gallery-swiper .swiper-slide img');
+            gallerySlides.forEach(function(slide) {
+                slide.addEventListener('click', function() {
+                    // Open image in lightbox or modal
+                    const imgSrc = this.getAttribute('src');
+                    const imgAlt = this.getAttribute('alt');
+
+                    // Create lightbox element
+                    const lightbox = document.createElement('div');
+                    lightbox.className = 'fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4';
+                    lightbox.innerHTML = `
+                        <div class="relative max-w-4xl w-full">
+                            <button class="absolute top-3 right-3 text-white text-3xl hover:text-yellow-500 z-10">&times;</button>
+                            <img src="${imgSrc}" alt="${imgAlt}" class="max-w-full max-h-[90vh] mx-auto">
+                        </div>
+                    `;
+
+                    // Add click event to close lightbox
+                    lightbox.addEventListener('click', function() {
+                        this.remove();
+                    });
+
+                    // Add lightbox to body
+                    document.body.appendChild(lightbox);
+                });
+            });
+        }
+    });
+</script>
 @endsection

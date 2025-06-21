@@ -52,6 +52,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress/nprogress.css" />
     <script src="https://cdn.jsdelivr.net/npm/nprogress/nprogress.js"></script>
 
+    <!-- Additional styles -->
+    @stack('styles')
 </head>
 
 <body>
@@ -70,6 +72,7 @@
     <script src="{{ asset('js/backend/app.js') }}"></script>
     <script src="https://www.ayurex.lk/js/fileChooser.min.js"></script>
     @yield('scripts')
+    @stack('scripts')
 </body>
 
 </html>
