@@ -177,19 +177,19 @@
                     <div class="flex flex-col bg-[#FF9933]">
                         <a href="#about" class="py-10 border-b flex px-15 gap-10 items-center text-xl font-bold hover:bg-[#02515A] duration-300 text-white">
                             <div>
-                                <img src="{{ asset('new_frontend/Assets/marker (4).png') }}" alt="">
+                                <img src="{{ asset('new_frontend/Assets/about.png') }}" alt="">
                             </div>
                             <div class="text-lg">ABOUT</div>
                         </a>
                         <a href="#included-excluded" class="py-10 border-b flex px-15 gap-10 items-center text-xl font-bold hover:bg-[#02515A] duration-300 text-white">
                             <div>
-                                <img src="{{ asset('new_frontend/Assets/marker (4).png') }}" alt="">
+                                <img src="{{ asset('new_frontend/Assets/incexc.png') }}" alt="">
                             </div>
                             <div class="text-lg">INCLUDE AND EXCLUDE</div>
                         </a>
                         <a href="#itinerary" class="py-10 border-b flex px-15 gap-10 items-center text-xl font-bold hover:bg-[#02515A] duration-300 text-white">
                             <div>
-                                <img src="{{ asset('new_frontend/Assets/marker (4).png') }}" alt="">
+                                <img src="{{ asset('new_frontend/Assets/iti.png') }}" alt="">
                             </div>
                             <div class="text-lg">ITINERARY</div>
                         </a>
@@ -271,25 +271,26 @@
                      <div class="text-xl sm:text-3xl"><span class="font-bold">PRICE ${{ number_format($tourPackage->price) }} /</span> {{ $tourPackage->duration }} Days Trip</div>
                    </div>
 
-                    <hr class="my-6 border-gray-200"/>
+                     <hr class="my-2 border-[#8A8A8A] border-dashed"/>
+
 
                     <!-- Tour Features -->
-                    <div class="flex flex-col sm:flex-row w-full gap-8 sm:gap-16 py-6">
+                    <div class="flex flex-col sm:flex-row w-full gap-8 sm:gap-16">
                         <div class="flex text-lg sm:text-2xl gap-6 items-center">
-                            <div class="bg-[#FF9933]/10 p-3 rounded-full shadow-sm">
-                                <img src="{{ asset('new_frontend/Assets/calendar-clock.png') }}" alt="Duration" class="w-8 h-8">
+                            <div class="p-3 rounded-full">
+                                <img src="{{ asset('new_frontend/Assets/days.png') }}" alt="Duration" class="w-8 h-8 object-contain">
                             </div>
                             <div class="text-nowrap text-gray-800">{{ $tourPackage->duration }}</div>
                         </div>
                         <div class="flex text-lg sm:text-2xl gap-6 items-center">
-                            <div class="bg-[#02515A]/10 p-3 rounded-full shadow-sm">
-                                <img src="{{ asset('new_frontend/Assets/footprint.png') }}" alt="Tour Type" class="w-8 h-8">
+                            <div class="p-3 rounded-full">
+                                <img src="{{ asset('new_frontend/Assets/type.png') }}" alt="Tour Type" class="w-8 h-8 object-contain">
                             </div>
                             <div class="text-nowrap  text-gray-800">{{ ucfirst(str_replace('-', ' ', $tourPackage->type)) }}</div>
                         </div>
                         <div class="flex text-lg sm:text-2xl gap-6 items-center">
-                            <div class="bg-[#FF9933]/10 p-3 rounded-full shadow-sm">
-                                <img src="{{ asset('new_frontend/Assets/team-check-alt.png') }}" alt="Group Size" class="w-8 h-8">
+                            <div class="p-3 rounded-full">
+                                <img src="{{ asset('new_frontend/Assets/numb.png') }}" alt="Group Size" class="w-8 h-8 object-contain">
                             </div>
                             <div class="text-nowrap text-gray-800">
                                 @if ($tourPackage->peoples)
@@ -301,14 +302,14 @@
                         </div>
                     </div>
 
-                    <hr class="my-6 border-gray-200"/>
+                    <hr class="my-2 border-[#8A8A8A] border-dashed"/>
 
                     <!-- Short Description -->
-                    <div class="my-8 text-xl leading-relaxed text-gray-700">
+                    <div class="my-8 text-base leading-relaxed text-gray-700">
                         {{ $tourPackage->short_description }}
                     </div>
 
-                    <div class="h-px w-full bg-gray-200 my-10"></div>
+                     <hr class="my-2 border-[#8A8A8A] border-dashed"/>
 
                     <!-- About This Tour -->
                     <div class="text-4xl sm:text-5xl font-black font-pri mb-8">About this tour</div>
@@ -316,20 +317,19 @@
                         {!! $tourPackage->description !!}
                     </div>
                 </div>
-                 <span class="w-3/5 h-[1px] bg-black"></span>
+                   <span class="w-3/5 h-[1px] border-dashed border-t border-[#8A8A8A]"></span>
                 <!-- Included/Excluded Section -->
-                <div id="included-excluded" class="scroll-mt-24 mt-12">
+                <div id="included-excluded" class="scroll-mt-24 mb-8">
 
-                    <div class="text-3xl sm:text-5xl font-black font-pri my-6">Included/Excluded</div>
+                    <div class="text-3xl sm:text-5xl font-black font-pri mb-8">Included/Excluded</div>
 
                     <div class="sm:w-4/5 flex flex-col sm:flex-row gap-8">
                         <!-- Included Items -->
                         <div class="w-full sm:w-1/2">
-
                             <ul class="space-y-3">
                                 @foreach($tourPackage->included as $item)
-                                    <li class="flex items-start gap-2 text-base sm:text-lg">
-
+                                    <li class="flex items-start gap-2 text-base">
+                                        <img src="{{ asset('new_frontend/Assets/inc.png') }}" alt="Included" class="w-4 h-4 mt-1 object-contain">
                                         <span>{{ $item }}</span>
                                     </li>
                                 @endforeach
@@ -338,11 +338,10 @@
 
                         <!-- Excluded Items -->
                         <div class="w-full sm:w-1/2">
-
                             <ul class="space-y-3">
                                 @foreach($tourPackage->excluded as $item)
-                                    <li class="flex items-start gap-2 text-base sm:text-lg">
-
+                                    <li class="flex items-start gap-2 text-base">
+                                        <img src="{{ asset('new_frontend/Assets/exc.png') }}" alt="Excluded" class="w-6 h-6  object-contain">
                                         <span>{{ $item }}</span>
                                     </li>
                                 @endforeach
@@ -350,15 +349,15 @@
                         </div>
                     </div>
                 </div>
-                 <span class="w-3/5 h-[1px] bg-black"></span>
+                   <span class="w-3/5 h-[1px] border-dashed border-t border-[#8A8A8A]"></span>
                 <!-- Itinerary Section -->
                 <div id="itinerary" class="scroll-mt-24 mt-12">
-                    <span class="w-3/5 h-[1px] bg-black"></span>
+                      <span class="w-3/5 h-[1px] border-dashed border-t border-[#8A8A8A]"></span>
                     <div class="text-3xl sm:text-5xl font-black font-pri my-6">Itinerary</div>
 
                     <div class="flex flex-col gap-5">
                         @foreach($tourPackage->itinerary as $day)
-                            <div class="collapse collapse-arrow bg-base-100 border border-gray-200 text-black rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                            <div class="collapse collapse-arrow bg-[#F6F6F6] border border-[#CECECE] text-black rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                 <input type="radio" name="my-accordion-2" {{ $loop->first ? 'checked="checked"' : '' }} />
                                 <div class="collapse-title">
                                     <div class="flex gap-6 p-4 items-center">
@@ -367,7 +366,7 @@
                                     </div>
                                 </div>
                                 <div class="collapse-content text-base text-wrap">
-                                    <div class="w-full p-5 flex flex-col sm:flex-row gap-6 border-t border-gray-200">
+                                    <div class="w-full p-5 flex flex-col sm:flex-row gap-6 border-t border-[#CECECE]">
                                         @if($day->image)
                                             <div class="w-full sm:w-1/3 mb-4 sm:mb-0">
                                                 <img src="{{ asset('storage/' . $day->image) }}" alt="{{ $day->title }}" class="w-full h-auto object-cover rounded-lg shadow-md">
@@ -388,7 +387,7 @@
 
                 <!-- Location Section -->
                 <div id="location" class="mb-10 scroll-mt-24 mt-12">
-                    <span class="w-3/5 h-[1px] bg-black"></span>
+                      <span class="w-3/5 h-[1px] border-dashed border-t border-[#8A8A8A]"></span>
                     <div class="mb-6 mt-6">
                         <div class="text-3xl sm:text-5xl font-black font-pri mb-2">Tour's Location</div>
                         <div class="text-base sm:text-lg text-gray-700 font-medium">{{ $tourPackage->locations }}</div>
