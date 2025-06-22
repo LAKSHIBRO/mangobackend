@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Album;
 use App\Models\Category;
 use App\Models\GalleryImages;
+use App\Models\TourPackage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -47,19 +47,14 @@ class GalleryController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            // 'title' => 'required',
-            // 'slug' => 'required|unique:albums,slug',
-            // 'cover' => 'image|mimes:jpeg,png,jpg,gif',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif',
+            'tour_package_id' => 'required|exists:tour_packages,id',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Added max size
         ];
 
         $messages = [
-            'title.required' => 'The title field is required.',
-            'slug.required' => 'The slug field is required.',
-            'slug.unique' => 'The slug has already been taken.',
-            'cover.image' => 'The logo must be an image file.',
-            'cover.mimes' => 'The logo must be a jpeg, png, jpg, or gif file.',
-            'cover.max' => 'The logo file must not exceed 2048 kilobytes.',
+            'tour_package_id.required' => 'The tour package ID is required.',
+            'tour_package_id.exists' => 'The selected tour package does not exist.',
+            'images.*.required' => 'Please select at least one image.',
             'images.*.image' => 'Gallery images must be image files.',
             'images.*.mimes' => 'Gallery images must be jpeg, png, jpg, or gif files.',
             'images.*.max' => 'Each gallery image must not exceed 2048 kilobytes.',
@@ -71,34 +66,32 @@ class GalleryController extends Controller
             return response()->json(['success' => false, 'message' => $validator->errors()->first()]);
         }
 
-        // $coverFilename = null;
+        $tourPackageId = $request->input('tour_package_id');
+        $uploadedImages = $request->file('images');
 
-        // if ($request->hasFile('cover')) {
-        //     $cover = $request->file('cover');
-        //     $coverFilename = hash('sha256', uniqid() . '_' . $cover->getClientOriginalName()) . '.' . $cover->getClientOriginalExtension();
-        //     $cover->move(public_path('uploads/album/'), $coverFilename);
-        // }
+        if (empty($uploadedImages)) {
+            return response()->json(['success' => false, 'message' => 'No images were uploaded.']);
+        }
 
-        // $album = new Album();
-        // $album->title = $request->input('title');
-        // $album->slug = Str::slug($request->input('slug'), '_');
-        // $album->category_id = $request->input('category');
-        // $album->image = $coverFilename;
-        // $album->status_id = $request->input('visibility');
-        // $album->save();
-
-        $galleryImages = $request->file('images');
-
-        foreach ($galleryImages as $galleryImage) {
-            $galleryImageFilename = hash('sha256', uniqid() . '_' . $galleryImage->getClientOriginalName()) . '.' . $galleryImage->getClientOriginalExtension();
-            $galleryImage->move(public_path('uploads/album/'), $galleryImageFilename);
+        foreach ($uploadedImages as $uploadedImage) {
+            $galleryImageFilename = hash('sha256', uniqid() . '_' . $uploadedImage->getClientOriginalName()) . '.' . $uploadedImage->getClientOriginalExtension();
+            // Ensure the target directory exists and is writable.
+            // For now, we assume 'public/uploads/album/' is correct and writable.
+            // Consider making the upload path configurable or more specific to tour packages if needed.
+            $uploadedImage->move(public_path('uploads/album/'), $galleryImageFilename);
 
             $galleryImageModel = new GalleryImages();
-            $galleryImageModel->image = $galleryImageFilename;
+            $galleryImageModel->tour_package_id = $tourPackageId;
+            // Assuming the model uses 'image' for the path, based on previous code.
+            // The model actually uses 'image_path'. Let's use the correct field name.
+            $galleryImageModel->image_path = $galleryImageFilename;
+            // Add other fields if necessary, e.g., caption, sort_order
+            // $galleryImageModel->caption = $request->input('caption'); // Example
+            // $galleryImageModel->sort_order = $request->input('sort_order'); // Example
             $galleryImageModel->save();
         }
 
-        return response()->json(['success' => true, 'message' => 'Images uploaded successfully.']);
+        return response()->json(['success' => true, 'message' => 'Gallery images uploaded successfully.']);
     }
 
     public function update(Request $request, $id)
@@ -116,10 +109,10 @@ class GalleryController extends Controller
         //     return response()->json(['success' => false, 'message' => $validator->errors()->first()]);
         // }
 
-        // $album = Album::findOrFail($id);
+        // $tourPackage = TourPackage::findOrFail($id); // Assuming $id is tour_package_id
 
-        // if ($request->albumImageStatus == 'deleted' && !empty($album->image)) {
-        //     $filePath = public_path('uploads/album/' . $album->image);
+        // if ($request->albumImageStatus == 'deleted' && !empty($tourPackage->image)) { // Assuming tour package might have a cover image
+        //     $filePath = public_path('uploads/tour_package_covers/' . $tourPackage->image); // Adjust path
         //     if (file_exists($filePath)) {
         //         File::delete($filePath);
         //     }
@@ -142,14 +135,14 @@ class GalleryController extends Controller
         //     $cover = $request->file('cover');
         //     $coverFilename = hash('sha256', uniqid() . '_' . $cover->getClientOriginalName()) . '.' . $cover->getClientOriginalExtension();
         //     $cover->move(public_path('uploads/album/'), $coverFilename);
-        //     $album->image = $coverFilename;
+        //     $tourPackage->image = $coverFilename; // Assuming tour package might have a cover image
         // }
 
-        // $album->title = $request->input('title');
-        // $album->slug = Str::slug($request->input('slug'), '_');
-        // $album->category_id = $request->input('category');
-        // $album->status_id = $request->input('visibility');
-        // $album->save();
+        // $tourPackage->title = $request->input('title'); // Adjust field names as per TourPackage model
+        // $tourPackage->slug = Str::slug($request->input('slug'), '_');
+        // $tourPackage->category_id = $request->input('category');
+        // $tourPackage->status_id = $request->input('visibility');
+        // $tourPackage->save();
 
         // if ($request->has('length')) {
         //     for ($i = 0; $i < $request->input('length'); $i++) {
@@ -163,7 +156,7 @@ class GalleryController extends Controller
 
         //                     $newGalleryImage = new GalleryImages();
         //                     $newGalleryImage->image = $galleryImageFilename;
-        //                     $newGalleryImage->album_id = $album->id;
+        //                     $newGalleryImage->tour_package_id = $tourPackage->id;
         //                     $newGalleryImage->save();
         //                 }
         //             } elseif ($request->input('status' . $i) == 'deleted') {
@@ -201,16 +194,27 @@ class GalleryController extends Controller
             $galleryImage->delete();
         }
 
-        // $album = Album::find($id);
+        // Potentially, if deleting a tour package, delete its associated gallery images.
+        // This method seems to be for deleting a single gallery image, not an album/tour package.
+        // The original logic for deleting a gallery image seems correct if $id is GalleryImage id.
+        // However, the route is /admin/delete-gallery/{id}, which might imply deleting a gallery (album/tour package)
+        // For now, assuming $id is for GalleryImage and the logic is for deleting a single image.
 
-        // if (!empty($album->image)) {
-        //     $filePath = public_path('uploads/album/' . $album->image);
-        //     if (file_exists($filePath)) {
-        //         File::delete($filePath);
-        //     }
-        // }
+        $galleryImage = GalleryImages::find($id);
 
-        // $album->delete();
+        if (!$galleryImage) {
+            return response()->json(['success' => false, 'message' => 'Image not found.']);
+        }
+
+        if (!empty($galleryImage->image_path)) {
+            $filePath = public_path('uploads/album/' . $galleryImage->image_path); // Use image_path
+            if (file_exists($filePath)) {
+                File::delete($filePath);
+            }
+        }
+
+        $galleryImage->delete();
+
         return response()->json(['success' => true, 'message' => 'Image deleted successfully.']);
     }
 }
