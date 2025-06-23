@@ -62,7 +62,7 @@ class FrontendController extends Controller
     }
     public function gallery()
     {
-        $galleries = GalleryImages::limit(10)->get();
+        $galleries = GalleryImages::limit(10)->where('tour_package_id', null)->get();
         $allGalleries = GalleryImages::all();
         return view('frontend.pages.new_gallery', compact('galleries', 'allGalleries'));
     }

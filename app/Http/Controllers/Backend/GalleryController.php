@@ -18,9 +18,9 @@ class GalleryController extends Controller
 
         $rows = $request->input('rows');
 
-        $albums = GalleryImages::orderby('created_at', 'desc')->paginate($rows ?? 10);
+        $albums = GalleryImages::orderby('created_at', 'desc')->where('tour_package_id', null)->paginate($rows ?? 10);
         $totalAlbums = GalleryImages::count();
-
+        // dd($albums);
         return view('backend.pages.gallery.index')->with('datas', $albums)
             ->with('totalAlbums', $totalAlbums);
     }
@@ -94,7 +94,10 @@ class GalleryController extends Controller
             $galleryImage->move(public_path('uploads/album/'), $galleryImageFilename);
 
             $galleryImageModel = new GalleryImages();
-            $galleryImageModel->image = $galleryImageFilename;
+            $galleryImageModel->image_path = $galleryImageFilename;
+            $galleryImageModel->tour_package_id = null;
+            $galleryImageModel->caption = null;
+            $galleryImageModel->sort_order = 0; // Default sort order
             $galleryImageModel->save();
         }
 
