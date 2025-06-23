@@ -92,7 +92,7 @@
                             @foreach ($datas as $data)
                                 <tr>
                                     <td class="text-left">
-                                        <img src="{{ asset('uploads/album/' . $data->image) }}" width="auto" height="80px"
+                                        <img src="{{ asset('uploads/album/' . $data->image_path) }}" width="auto" height="80px"
                                             alt="">
                                     </td>
                                     <td>{{ $data->created_at->diffForHumans() }}</td>
