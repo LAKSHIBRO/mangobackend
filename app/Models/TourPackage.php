@@ -18,6 +18,9 @@ class TourPackage extends Model
         'short_description',
         'description',
         'image',
+        'gallery_images', // JSON encoded array of image paths
+        'category_id',
+        'people_count',
         'featured',
         'active',
         'locations', // comma-separated locations
@@ -28,13 +31,23 @@ class TourPackage extends Model
     protected $casts = [
         'included' => 'array',
         'excluded' => 'array',
+        'gallery_images' => 'array',
         'featured' => 'boolean',
         'active' => 'boolean',
+        'people_count' => 'integer',
     ];
 
     public function itinerary()
     {
         return $this->hasMany(TourItinerary::class);
+    }
+
+    /**
+     * Get the category for this tour package.
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     /**

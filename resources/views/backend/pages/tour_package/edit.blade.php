@@ -70,6 +70,29 @@
                             @enderror
                         </div>
 
+                        <div class="col-md-6 mb-3">
+                            <label for="category_id" class="form-label">Category</label>
+                            <select class="form-select" id="category_id" name="category_id">
+                                <option value="">Select Category</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('category_id', $tourPackage->category_id) == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="people_count" class="form-label">Number of People</label>
+                            <input type="number" class="form-control" id="people_count" name="people_count" value="{{ old('people_count', $tourPackage->people_count) }}" min="0">
+                            @error('people_count')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <div class="col-md-6 mb-3 d-flex">
                             <div class="form-check me-4">
                                 <input class="form-check-input" type="checkbox" id="featured" name="featured" value="1" {{ old('featured', $tourPackage->featured) ? 'checked' : '' }}>
@@ -112,6 +135,42 @@
                             <div class="text-danger mt-1">{{ $message }}</div>
                             @enderror
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="card-title">Gallery Images</div>
+                </div>
+                <div class="card-body">
+                    <div class="col-12 mb-3">
+                        <label class="form-label">Current Gallery Images</label>
+                        <div class="row">
+                            @if($tourPackage->gallery_images && count($tourPackage->gallery_images) > 0)
+                                @foreach($tourPackage->gallery_images as $image)
+                                <div class="col-md-3 mb-3">
+                                    <div class="position-relative">
+                                        <img src="{{ asset('storage/' . $image) }}" alt="Gallery Image" class="img-thumbnail" style="height: 150px; width:100%; object-fit: cover;">
+                                        <div class="position-absolute top-0 end-0 p-1">
+                                            <input type="checkbox" class="form-check-input bg-danger border-danger" name="remove_gallery_images[]" value="{{ $image }}" title="Mark to remove">
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            @else
+                                <p>No gallery images uploaded yet.</p>
+                            @endif
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="col-12 mb-3">
+                        <label for="gallery_images" class="form-label">Add New Gallery Images (Multiple)</label>
+                        <input type="file" class="form-control" id="gallery_images" name="gallery_images[]" multiple accept="image/*">
+                        <small class="form-text text-muted">Select new images to add them to the gallery. Check the box on existing images to remove them upon update.</small>
+                        @error('gallery_images.*')
+                        <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
             </div>

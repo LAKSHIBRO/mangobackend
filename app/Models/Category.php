@@ -9,6 +9,13 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'slug',
+        'category_type_id',
+        'status_id',
+    ];
+
     public function categoryType()
     {
         return $this->belongsTo(CategoryType::class, 'category_type_id');

@@ -44,13 +44,47 @@
                     </div>
                 </div>
 
-                <!-- Right Main Image -->
+                <!-- Right Main Image Slider -->
                 <div class="sm:w-2/3 sm:p-5">
-                    <img class="w-full" src="{{ asset('storage/' . $tourPackage->image) }}" alt="{{ $tourPackage->name }}">
+                    @if($tourPackage->gallery_images && count($tourPackage->gallery_images) > 0)
+                        <div class="relative" id="gallerySlider">
+                            <!-- Slides -->
+                            @foreach($tourPackage->gallery_images as $index => $imagePath)
+                                <div class="gallery-slide {{ $index == 0 ? 'active' : '' }}">
+                                    <img class="w-full h-[400px] md:h-[500px] object-cover" src="{{ asset('storage/' . $imagePath) }}" alt="{{ $tourPackage->name }} - Gallery Image {{ $index + 1 }}">
+                                </div>
+                            @endforeach
+
+                            <!-- Navigation Buttons -->
+                            @if(count($tourPackage->gallery_images) > 1)
+                            <button id="prevSlide" class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 focus:outline-none">
+                                &#10094;
+                            </button>
+                            <button id="nextSlide" class="absolute top-1/2 right-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 focus:outline-none">
+                                &#10095;
+                            </button>
+                            @endif
+                        </div>
+                    @else
+                        <img class="w-full h-[400px] md:h-[500px] object-cover" src="{{ asset('storage/' . $tourPackage->image) }}" alt="{{ $tourPackage->name }}">
+                    @endif
                 </div>
             </div>
         </div>
 
+<style>
+    .gallery-slide {
+        display: none;
+    }
+    .gallery-slide.active {
+        display: block;
+        animation: fadeIn 0.5s;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0.4; }
+        to { opacity: 1; }
+    }
+</style>
 
             <div class="w-full bg-white flex flex-col sm:flex-row text-black sm:p-20 pt-0">
                 <div class="w-full sm:w-2/3 p-10 flex flex-col gap-8">
@@ -70,7 +104,7 @@
                         <div class="bg-gray-50 rounded-lg shadow-md p-6 mb-6">
                             <h3 class="text-xl font-bold mb-4 text-[#02515A]">Tour Details</h3>
 
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <!-- Duration Feature -->
                                 <div class="flex items-center gap-4 p-3 bg-white rounded-md shadow-sm border-l-4 border-[#FF9933]">
                                     <div class="bg-[#FF9933] p-3 rounded-full">
@@ -100,7 +134,26 @@
                                     </div>
                                     <div>
                                         <p class="text-sm text-gray-500">Group Size</p>
-                                        <p class="font-semibold">Up to 25 people</p>
+                                        <p class="font-semibold">{{ $tourPackage->people_count > 0 ? $tourPackage->people_count . ' People' : 'Varies' }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Category Feature -->
+                                @if($tourPackage->category)
+                                <div class="flex items-center gap-4 p-3 bg-white rounded-md shadow-sm border-l-4 border-[#02515A]">
+                                    <div class="bg-[#02515A] p-3 rounded-full">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Category</p>
+                                        <p class="font-semibold">{{ $tourPackage->category->name }}</p>
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <span class="w-3/5 h-[1px] bg-black"></span>
                                     </div>
                                 </div>
                             </div>
@@ -292,6 +345,38 @@
                 setTimeout(() => {
                     element.style.display = 'none';
                 }, 500);
+            }
+
+            // Basic Gallery Slider Logic
+            const gallerySlider = document.getElementById('gallerySlider');
+            if (gallerySlider) {
+                const slides = gallerySlider.querySelectorAll('.gallery-slide');
+                const prevButton = gallerySlider.querySelector('#prevSlide');
+                const nextButton = gallerySlider.querySelector('#nextSlide');
+                let currentSlide = 0;
+
+                function showSlide(index) {
+                    slides.forEach((slide, i) => {
+                        slide.classList.toggle('active', i === index);
+                    });
+                }
+
+                if (prevButton && nextButton && slides.length > 1) {
+                    prevButton.addEventListener('click', () => {
+                        currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
+                        showSlide(currentSlide);
+                    });
+
+                    nextButton.addEventListener('click', () => {
+                        currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
+                        showSlide(currentSlide);
+                    });
+                }
+
+                // Initialize first slide
+                if(slides.length > 0) {
+                    showSlide(currentSlide);
+                }
             }
         });
     </script>

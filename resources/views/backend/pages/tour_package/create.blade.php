@@ -96,6 +96,27 @@
                             @enderror
                         </div>
 
+                        <div class="col-md-6 mb-3">
+                            <label for="category_id" class="form-label">Category</label>
+                            <select class="form-select" id="category_id" name="category_id">
+                                <option value="">Select Category</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="people_count" class="form-label">Number of People</label>
+                            <input type="number" class="form-control" id="people_count" name="people_count" value="{{ old('people_count', 0) }}" min="0">
+                            @error('people_count')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <div class="col-md-6 mb-3 d-flex align-items-end">
                             <div class="form-check me-4">
                                 <input class="form-check-input" type="checkbox" id="featured" name="featured" value="1" {{ old('featured') ? 'checked' : '' }}>
@@ -126,6 +147,21 @@
                             <div class="text-danger mt-1">{{ $message }}</div>
                             @enderror
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="card-title">Gallery Images</div>
+                </div>
+                <div class="card-body">
+                    <div class="col-12 mb-3">
+                        <label for="gallery_images" class="form-label">Gallery Images (Multiple)</label>
+                        <input type="file" class="form-control" id="gallery_images" name="gallery_images[]" multiple accept="image/*">
+                        @error('gallery_images.*')
+                        <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
             </div>
