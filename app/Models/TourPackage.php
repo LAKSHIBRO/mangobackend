@@ -24,6 +24,7 @@ class TourPackage extends Model
         'locations', // comma-separated locations
         'included', // JSON encoded list of included items
         'excluded', // JSON encoded list of excluded items
+        'category_id', // Added category_id
     ];
 
     protected $casts = [
@@ -52,5 +53,13 @@ class TourPackage extends Model
     public function inquiries()
     {
         return $this->hasMany(Inquiry::class, 'tour_id');
+    }
+
+    /**
+     * Get the category that owns the tour package.
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

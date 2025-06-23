@@ -288,6 +288,14 @@
                             </div>
                             <div class="text-nowrap  text-gray-800">{{ ucfirst(str_replace('-', ' ', $tourPackage->type)) }}</div>
                         </div>
+                        @if($tourPackage->category)
+                        <div class="flex text-lg sm:text-2xl gap-6 items-center">
+                            <div class="p-3 rounded-full">
+                                <img src="{{ asset('new_frontend/Assets/type.png') }}" alt="Category" class="w-8 h-8 object-contain"> {{-- Placeholder icon --}}
+                            </div>
+                            <div class="text-nowrap text-gray-800">{{ $tourPackage->category->name }}</div>
+                        </div>
+                        @endif
                         <div class="flex text-lg sm:text-2xl gap-6 items-center">
                             <div class="p-3 rounded-full">
                                 <img src="{{ asset('new_frontend/Assets/numb.png') }}" alt="Group Size" class="w-8 h-8 object-contain">

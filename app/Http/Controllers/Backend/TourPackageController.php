@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category; // Added Category model
 use App\Models\TourPackage;
 use App\Models\TourItinerary;
 use Illuminate\Http\Request;
@@ -20,7 +21,8 @@ class TourPackageController extends Controller
 
     public function create()
     {
-        return view('backend.pages.tour_package.create');
+        $categories = Category::where('status_id', 1)->orderBy('name')->get(); // Assuming status_id 1 is active
+        return view('backend.pages.tour_package.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -49,6 +51,7 @@ class TourPackageController extends Controller
                 'excluded' => $request->excluded,
                 'featured' => $request->has('featured'),
                 'active' => $request->has('active'),
+                'category_id' => $request->category_id, // Added category_id
             ]);
 
             // Handle gallery images if provided
@@ -107,8 +110,9 @@ class TourPackageController extends Controller
 
     public function edit($id)
     {
-        $tourPackage = TourPackage::with(['itinerary', 'galleryImages'])->findOrFail($id);
-        return view('backend.pages.tour_package.edit', compact('tourPackage'));
+        $tourPackage = TourPackage::with(['itinerary', 'galleryImages', 'category'])->findOrFail($id); // Eager load category
+        $categories = Category::where('status_id', 1)->orderBy('name')->get(); // Assuming status_id 1 is active
+        return view('backend.pages.tour_package.edit', compact('tourPackage', 'categories'));
     }
 
     public function update(Request $request, $id)
@@ -147,6 +151,7 @@ class TourPackageController extends Controller
                 'excluded' => $request->excluded,
                 'featured' => $request->has('featured'),
                 'active' => $request->has('active'),
+                'category_id' => $request->category_id, // Added category_id
             ]);
 
             // Handle gallery images if provided
@@ -337,6 +342,7 @@ class TourPackageController extends Controller
             'short_description' => 'required|string',
             'description' => 'required|string',
             'image' => $imageRule,
+            'category_id' => 'nullable|exists:categories,id', // Added category_id validation
             'gallery_images' => 'nullable|array',
             'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'gallery_captions' => 'nullable|array',

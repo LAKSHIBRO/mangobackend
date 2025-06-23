@@ -13,4 +13,12 @@ class Category extends Model
     {
         return $this->belongsTo(CategoryType::class, 'category_type_id');
     }
+
+    /**
+     * Get the tour packages for the category.
+     */
+    public function tourPackages()
+    {
+        return $this->hasMany(TourPackage::class);
+    }
 }

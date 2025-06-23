@@ -73,6 +73,23 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
+                            <label for="category_id" class="form-label">Category</label>
+                            <select class="form-select" id="category_id" name="category_id">
+                                <option value="">Select Category (Optional)</option>
+                                @if(isset($categories))
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            @error('category_id')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-3">
                             <label for="price" class="form-label">Price ($) <span class="text-danger">*</span></label>
                             <input type="number" step="0.01" class="form-control" id="price" name="price" value="{{ old('price') }}" required>
                             @error('price')
