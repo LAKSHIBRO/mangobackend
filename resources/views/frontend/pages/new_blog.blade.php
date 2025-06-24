@@ -22,7 +22,7 @@
             @forelse($posts as $post)
                 <div class="w-full sm:w-1/3 p-5 flex flex-col group">
                     <div class="relative overflow-hidden">
-                        <img src="{{ asset('uploads/post/' . $post->image) }}" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" alt="{{ $post->title }}">
+                        <img src="{{ asset('uploads/post/' . $post->image) }}" class="w-full object-cover transition-transform duration-500 group-hover:scale-110" alt="{{ $post->title }}">
                         <div class="absolute top-0 text-white group-hover:bg-[#FF9933] bg-black duration-300 py-3 px-7 font-bold">
                             <div>{{ $post->category->name ?? 'Uncategorized' }}</div>
                         </div>
